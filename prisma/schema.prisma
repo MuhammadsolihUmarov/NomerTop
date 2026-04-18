@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String    @default("USER") // USER, ADMIN
+  plates        Plate[]
+  notifications Notification[]
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Plate {
+  id                String             @id @default(cuid())
+  number            String             @unique // Normalized: 01A777AA
+  displayNumber     String             // Formatted: 01 | A 777 AA
+  country           String             @default("UZ")
+  brand             String?
+  model             String?
+  color             String?
+  ownerId           String
+  owner             User               @relation(fields: [ownerId], references: [id])
+  verifiedStatus    String             @default("PENDING") // PENDING, APPROVED, REJECTED
+  photos            VehiclePhoto[]
+  messages          Message[]
+  verificationLogs  VerificationRequest[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model VehiclePhoto {
+  id      String @id @default(cuid())
+  url     String
+  plateId String
+  plate   Plate  @relation(fields: [plateId], references: [id])
+}
+
+model VerificationRequest {
+  id             String             @id @default(cuid())
+  plateId        String
+  plate          Plate              @relation(fields: [plateId], references: [id])
+  documentUrl    String?
+  status         String             @default("PENDING")
+  adminNotes     String?
+  createdAt      DateTime           @default(now())
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  content     String
+  isQuickMsg  Boolean  @default(false)
+  senderName  String?  @default("Anonymous")
+  plateId     String
+  plate       Plate    @relation(fields: [plateId], references: [id])
+  createdAt   DateTime @default(now())
+  isRead      Boolean  @default(false)
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  body      String
+  type      String   // MESSAGE, SYSTEM, VERIFICATION
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// Next-Auth Boilerplate
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
+}
