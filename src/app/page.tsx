@@ -127,13 +127,6 @@ export default function Home() {
         .hero-subtitle { font-size: 1.4rem; color: var(--muted-foreground); max-width: 700px; margin: 0 auto 3.5rem; line-height: 1.6; }
 
         .hero-actions { display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
-        .btn-glass-large { 
-          background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2);
-          color: white; padding: 1.25rem 2.5rem; border-radius: 1.25rem;
-          font-weight: 800; font-size: 1.1rem; transition: 0.3s;
-          display: inline-flex; align-items: center; justify-content: center;
-        }
-        .btn-glass-large:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); transform: translateY(-3px); }
 
         .features-section { padding: 6rem 0; }
         .features-grid-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }
