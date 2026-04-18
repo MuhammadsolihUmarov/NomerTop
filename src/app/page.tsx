@@ -101,27 +101,26 @@ export default function Home() {
         .btn-primary-large {
           background: var(--primary);
           color: white;
-          padding: 1.25rem 2.5rem;
-          border-radius: 16px;
-          font-weight: 800;
-          font-size: 1.1rem;
+          padding: 0.85rem 1.75rem;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 1rem;
           display: flex;
           align-items: center;
           gap: 0.75rem;
-          box-shadow: 0 10px 40px var(--primary-glow);
-          transition: 0.3s;
+          transition: 0.2s;
         }
-        .btn-primary-large:hover { transform: translateY(-3px); filter: brightness(1.1); }
+        .btn-primary-large:hover { transform: translateY(-1px); filter: brightness(1.1); }
 
         .btn-secondary {
           background: var(--surface);
           border: 1px solid var(--border);
           color: white;
-          padding: 1.25rem 2.50rem;
-          border-radius: 16px;
-          font-weight: 800;
-          font-size: 1.1rem;
-          transition: 0.3s;
+          padding: 0.85rem 1.75rem;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 1rem;
+          transition: 0.2s;
         }
         .btn-secondary:hover { background: var(--surface-hover); }
 
