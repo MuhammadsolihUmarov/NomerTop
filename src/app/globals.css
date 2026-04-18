@@ -114,3 +114,96 @@ button {
   background-color: var(--background);
   color: var(--foreground);
 }
+
+/* Landing Page Styles */
+.hero { 
+  padding: 6rem 0; 
+  text-align: center; 
+}
+.hero-content { 
+  max-width: 800px; 
+  margin: 0 auto;
+}
+.hero-actions { 
+  display: flex; 
+  gap: 1.25rem; 
+  justify-content: center; 
+  flex-wrap: wrap; 
+  margin-top: 3rem;
+}
+
+.btn-primary-large {
+  background-color: var(--primary) !important;
+  color: white !important;
+  padding: 0.75rem 1.75rem;
+  border-radius: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 4px 15px var(--primary-glow);
+}
+
+.btn-secondary {
+  background-color: var(--surface) !important;
+  color: white !important;
+  border: 1px solid var(--border);
+  padding: 0.75rem 1.75rem;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.grid-wrap { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+  gap: 2rem; 
+  margin-top: 4rem;
+}
+
+.feature-card { 
+  padding: 2.5rem; 
+  border-radius: 20px; 
+  border: 1px solid var(--border);
+}
+
+.feature-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Navbar Fixes */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-content {
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.desktop-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.desktop-links a {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.desktop-links a:hover {
+  color: white;
+}

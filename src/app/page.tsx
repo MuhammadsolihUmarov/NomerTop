@@ -88,59 +88,6 @@ export default function Home() {
         </div>
       </section>
 
-      <style jsx>{`
-        .landing-page { padding-bottom: 8rem; }
-        .hero { padding: 5rem 0; text-align: center; }
-        .hero-content { max-width: 800px; }
-        
-        h1 { font-size: 2.75rem; line-height: 1.2; margin-bottom: 1.5rem; }
-        p { font-size: 1.1rem; color: var(--muted); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
-
-        .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-        
-        .btn-primary-large {
-          background: var(--primary);
-          color: white;
-          padding: 0.85rem 1.75rem;
-          border-radius: 12px;
-          font-weight: 600;
-          font-size: 1rem;
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          transition: 0.2s;
-        }
-        .btn-primary-large:hover { transform: translateY(-1px); filter: brightness(1.1); }
-
-        .btn-secondary {
-          background: var(--surface);
-          border: 1px solid var(--border);
-          color: white;
-          padding: 0.85rem 1.75rem;
-          border-radius: 12px;
-          font-weight: 600;
-          font-size: 1rem;
-          transition: 0.2s;
-        }
-        .btn-secondary:hover { background: var(--surface-hover); }
-
-        .grid-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; }
-        .feature-card { padding: 3rem; border-radius: 32px; transition: 0.3s; }
-        .feature-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .feature-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; }
-        .feature-icon :global(svg) { width: 28px; height: 28px; }
-        h3 { font-size: 1.5rem; margin-bottom: 1rem; }
-        .feature-card p { font-size: 1rem; color: var(--muted); margin: 0; text-align: left; }
-
-        .quote-section { padding: 4rem 0; }
-        .quote-card { padding: 4rem; border-radius: 40px; text-align: center; }
-        .quote-card h2 { font-size: 1.5rem; color: var(--muted); font-weight: 600; }
-
-        @media (max-width: 768px) {
-          h1 { font-size: 2.75rem; }
-          .hero { padding: 4rem 0; }
-        }
-      `}</style>
     </div>
   );
 }
