@@ -4,13 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from './LanguageProvider';
-import { usePathname } from 'next/navigation';
-import { User, Menu, X, Globe, Shield } from 'lucide-react';
+import { User, Menu, X, Globe } from 'lucide-react';
 
 export default function Navbar() {
   const { locale, setLocale, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
+  const [showLangs, setShowLangs] = useState(false);
 
   const languages = [
     { code: 'en', label: 'English', flag: '🇺🇸' },
@@ -35,8 +34,8 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="desktop-links">
-          <Link href="/search" className={`nav-link ${pathname === '/search' ? 'active' : ''}`}>{t.nav.search}</Link>
-          <Link href="/dashboard" className={`nav-link ${pathname.startsWith('/dashboard') ? 'active' : ''}`}>{t.nav.dashboard}</Link>
+          <Link href="/search" className="no-underline">{t.nav.search}</Link>
+          <Link href="/dashboard" className="no-underline">{t.nav.dashboard}</Link>
           
           {/* Language Switcher - Direct Toggle */}
           <div className="lang-toggle-group">
@@ -59,14 +58,10 @@ export default function Navbar() {
         </div>
 
         <style jsx>{`
-          .lang-toggle-group { display: flex; gap: 0.25rem; background: rgba(255,255,255,0.05); padding: 0.2rem; border-radius: 14px; border: 1px solid var(--border); }
-          .lang-btn-quick { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.8rem; border-radius: 10px; font-size: 0.8rem; font-weight: 900; color: var(--muted-foreground); transition: 0.3s; }
-          .lang-btn-quick:hover { color: white; background: rgba(255,255,255,0.05); }
-          .lang-text-mini { opacity: 0.5; }
-          
-          .nav-link { font-size: 0.95rem; font-weight: 700; color: var(--muted-foreground); transition: 0.3s; padding: 0.5rem 1rem; border-radius: 0.75rem; text-decoration: none; }
-          .nav-link:hover { color: white; background: rgba(255,255,255,0.03); }
-          .nav-link.active { color: white; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); }
+          .lang-toggle-group { display: flex; gap: 0.5rem; background: rgba(255,255,255,0.03); padding: 0.25rem; border-radius: 12px; border: 1px solid var(--border); }
+          .lang-btn-quick { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.75rem; border-radius: 8px; font-size: 0.7rem; font-weight: 850; color: var(--muted-foreground); transition: 0.2s; }
+          .lang-btn-quick:hover { background: rgba(255,255,255,0.08); color: white; }
+          .lang-text-mini { opacity: 0.6; }
         `}</style>
 
         {/* Mobile Toggle */}

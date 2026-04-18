@@ -7,22 +7,6 @@ export const translations = {
       logout: 'Log Out'
     },
     hero: {
-      footerTitle: 'NomerTop — Auto Communications Network',
-      footerDesc: 'The only platform putting security and privacy first.',
-      trust: {
-        title: 'Why users trust us?',
-        privacy: 'Your number is never shown. Communication is 100% anonymous.',
-        verification: 'Only verified owners can manage their plates.',
-        protection: 'Safe system protected from spam and abuse.'
-      },
-      howItWorks: {
-        step1: 'Search for a Plate',
-        step1Desc: 'Enter a license plate like 01 A 777 AA.',
-        step2: 'Leave a Message',
-        step2Desc: 'Send an anonymous signal to the owner.',
-        step3: 'Private Chat',
-        step3Desc: 'Communicate without revealing your phone number.'
-      },
       title: 'Your License Plate is Now a Communication Hub',
       subtitle: 'The global network that turns vehicle license plates into anonymous, secure communication channels.',
       ctaSearch: 'Search Vehicle',
@@ -124,22 +108,6 @@ export const translations = {
       logout: 'Выйти'
     },
     hero: {
-      footerTitle: 'NomerTop — Автомобильная сеть общения',
-      footerDesc: 'Единственная платформа, ставящая безопасность и конфиденциальность на первое место.',
-      trust: {
-        title: 'Почему нам доверяют?',
-        privacy: 'Ваш номер никогда не отображается. Общение полностью анонимно.',
-        verification: 'Только подтвержденные владельцы могут управлять своими номерами.',
-        protection: 'Система защищена от спама и злоупотреблений.'
-      },
-      howItWorks: {
-        step1: 'Найдите номер',
-        step1Desc: 'Введите госномер, например 01 A 777 AA.',
-        step2: 'Оставьте сообщение',
-        step2Desc: 'Анонимно отправьте сигнал владельцу.',
-        step3: 'Скрытое общение',
-        step3Desc: 'Общайтесь, не раскрывая свой номер телефона.'
-      },
       title: 'Номерной знак — ваш профиль',
       subtitle: 'Глобальная сеть для анонимного и безопасного общения между водителями.',
       ctaSearch: 'Найти авто',
@@ -241,22 +209,6 @@ export const translations = {
       logout: 'Chiqish'
     },
     hero: {
-      footerTitle: 'NomerTop — Avtomobil muloqot tarmog‘i',
-      footerDesc: 'Xavfsizlik va maxfiylikni birinchi o‘ringa qo‘yadigan yagona platforma.',
-      trust: {
-        title: 'Nega bizga ishonishadi?',
-        privacy: 'Sizning raqamingiz hech qachon ko‘rsatilmaydi. Muloqot to‘liq anonim.',
-        verification: 'Faqat tasdiqlangan egalar o‘z raqamlarini boshqarishi mumkin.',
-        protection: 'Spam va suiiste’mol qilishdan himoyalangan xavfsiz tizim.'
-      },
-      howItWorks: {
-        step1: 'Raqamni qidiring',
-        step1Desc: '01 A 777 AA kabi davlat raqamini kiriting.',
-        step2: 'Xabar qoldiring',
-        step2Desc: 'Anonim tarzda eganingizga xabar yuboring.',
-        step3: 'Maxfiy muloqot',
-        step3Desc: 'Telefon raqamingizni oshkor qilmasdan muloqot qiling.'
-      },
       title: 'Mashina raqami — muloqot markazi',
       subtitle: 'Mashina raqami orqali egasiga xabar yuborishning eng oddiy va xavfsiz yo‘li.',
       ctaSearch: 'Mashina qidirish',

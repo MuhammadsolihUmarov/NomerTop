@@ -11,13 +11,13 @@ import { useTranslation } from '@/components/LanguageProvider';
 
 const detectCountry = (plate: string) => {
   const clean = plate.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-  if (!clean) return { code: 'OTH', flag: '🌐', name: 'Global Network' };
+  if (!clean) return { code: 'OTH', flag: '🌐', name: 'Global' };
 
-  if (/^\d{2}[A-Z]/.test(clean) || /^\d{2}\d{3}[A-Z]{3}/.test(clean)) return { code: 'UZ', flag: '🇺🇿', name: 'O‘zbekiston' };
-  if (/^[ABEKMHOPCTX]\d{3}[ABEKMHOPCTX]{2}/.test(clean)) return { code: 'RU', flag: '🇷🇺', name: 'Rossiya' };
-  if (/^\d{3}[A-Z]{2,3}\d{2}/.test(clean)) return { code: 'KZ', flag: '🇰🇿', name: 'Qozog‘iston' };
+  if (/^\d{2}[A-Z]/.test(clean) || /^\d{2}\d{3}[A-Z]{3}/.test(clean)) return { code: 'UZ', flag: '🇺🇿', name: 'Uzbekistan' };
+  if (/^[ABEKMHOPCTX]\d{3}[ABEKMHOPCTX]{2}/.test(clean)) return { code: 'RU', flag: '🇷🇺', name: 'Russia' };
+  if (/^\d{3}[A-Z]{2,3}\d{2}/.test(clean)) return { code: 'KZ', flag: '🇰🇿', name: 'Kazakhstan' };
 
-  return { code: 'OTH', flag: '🌐', name: 'Xalqaro tarmoq' };
+  return { code: 'OTH', flag: '🌐', name: 'Global' };
 };
 
 export default function RegisterPlate() {
@@ -90,8 +90,8 @@ export default function RegisterPlate() {
 
           <form onSubmit={handleAction} className="registration-form">
             <div className="input-group">
-              <label className="label-premium">{t.registration.plateNumber} <span className="text-secondary">*</span></label>
-              <div className="smart-input-box focus-ring">
+              <label>{t.registration.plateNumber}</label>
+              <div className="smart-input-box">
                 <input 
                   type="text" 
                   value={query}
@@ -105,77 +105,60 @@ export default function RegisterPlate() {
                   <span className="smart-label">{detected.name}</span>
                 </div>
               </div>
-              <p className="helper-text italic mt-2 opacity-60">Sistemamiz raqam formatini avtomatik aniqlaydi.</p>
             </div>
 
             <div className="details-grid">
               <div className="input-field">
-                <label className="label-premium">{t.registration.brand} <span className="text-secondary">*</span></label>
-                <div className="focus-ring input-relative">
-                  <input 
-                    type="text" 
-                    placeholder="Masalan: Chevrolet" 
-                    value={formData.brand}
-                    onChange={(e) => setFormData({...formData, brand: e.target.value})}
-                    required
-                  />
-                </div>
+                <label>{t.registration.brand}</label>
+                <input 
+                  type="text" 
+                  placeholder="Chevrolet" 
+                  value={formData.brand}
+                  onChange={(e) => setFormData({...formData, brand: e.target.value})}
+                  required
+                />
               </div>
               <div className="input-field">
-                <label className="label-premium">{t.registration.model} <span className="text-secondary">*</span></label>
-                <div className="focus-ring input-relative">
-                  <input 
-                    type="text" 
-                    placeholder="Masalan: Gentra" 
-                    value={formData.model}
-                    onChange={(e) => setFormData({...formData, model: e.target.value})}
-                    required
-                  />
-                </div>
+                <label>{t.registration.model}</label>
+                <input 
+                  type="text" 
+                  placeholder="Cobalt" 
+                  value={formData.model}
+                  onChange={(e) => setFormData({...formData, model: e.target.value})}
+                  required
+                />
               </div>
             </div>
 
             <div className="photo-section">
-              <label className="label-premium">{t.registration.photos} <span className="text-accent"></span></label>
-              <p className="helper-text mb-4">{t.plateDetail.visualVer}. Foto egasini tasdiqlash uchun kerak.</p>
-              
-              <div className="upload-grid-premium">
+              <label>{t.registration.photos}</label>
+              <div className="upload-grid">
                 {photos.map((url, i) => (
-                  <div key={i} className="upload-preview-focal">
+                  <div key={i} className="upload-preview">
                     <img src={url} alt="preview" />
-                    <button type="button" className="remove-btn" onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))}>
-                      <X size={14} />
-                    </button>
+                    <button type="button" onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))}><X size={12} /></button>
                   </div>
                 ))}
                 {photos.length < 3 && (
-                  <label className="upload-zone-premium glass-card cursor-pointer">
+                  <label className="upload-btn cursor-pointer">
                     <input 
                       type="file" 
                       accept="image/*" 
                       className="hidden" 
                       onChange={handlePhotoUpload}
                     />
-                    <div className="upload-content">
-                      <Camera size={24} className="text-primary mb-2" />
-                      <span>Rasm yuklash</span>
-                    </div>
+                    <Camera size={20} />
                   </label>
                 )}
               </div>
             </div>
 
-            <div className="verification-notice glass">
-              <Shield size={20} className="text-secondary" />
-              <div>
-                <p className="font-bold text-white mb-1">Xavfsiz tasdiqlash</p>
-                <p className="helper-text text-xs leading-relaxed">
-                  Raqamingizni muloqotga tayyorlashdan oldin, mutaxassislarimiz ma’lumotlarni haqqoniyligini ko‘zdan kechirishi mumkin.
-                </p>
-              </div>
+            <div className="tos-pill glass">
+              <Shield size={16} />
+              <span>{t.registration.tos}</span>
             </div>
 
-            <button type="submit" className="btn-primary-focal" disabled={isLoading} style={{ width: '100%', marginTop: '3rem' }}>
+            <button type="submit" className="btn-primary-large" disabled={isLoading} style={{ width: '100%', marginTop: '2rem' }}>
               {isLoading ? <div className="spinner"></div> : (
                 <>
                   <span>{t.registration.submit}</span>
@@ -188,58 +171,47 @@ export default function RegisterPlate() {
       </div>
 
       <style jsx>{`
-        .register-page-midnight { padding: 4rem 0 8rem; position: relative; }
-        .container { max-width: 700px; margin: 0 auto; padding: 0 1.5rem; }
-        .page-header { margin-bottom: 4rem; }
-        .btn-back { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; border-radius: 1rem; font-weight: 800; color: var(--muted-foreground); transition: 0.3s; }
-        .btn-back:hover { background: rgba(255,255,255,0.05); color: white; }
+        .register-page-midnight { padding: 4rem 0; }
+        .container { max-width: 650px; margin: 0 auto; }
+        .page-header { margin-bottom: 3rem; }
+        .btn-back { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem; border-radius: 12px; font-weight: 700; color: var(--muted); }
         
-        .registration-card { padding: 5rem 4rem; border-radius: 4rem; border: 1px solid rgba(255,255,255,0.1); }
-        .form-header { text-align: center; margin-bottom: 4.5rem; }
-        .icon-badge { width: 80px; height: 80px; background: rgba(99, 102, 241, 0.1); border-radius: 2rem; display: flex; align-items: center; justify-content: center; color: var(--primary); margin: 0 auto 2rem; box-shadow: 0 0 40px var(--primary-glow); }
+        .registration-card { padding: 4rem; border-radius: 32px; border: 1px solid var(--border); }
+        .form-header { text-align: center; margin-bottom: 3.5rem; }
+        .icon-badge { width: 60px; height: 60px; background: var(--surface); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--primary); margin: 0 auto 1.5rem; box-shadow: 0 0 30px var(--primary-glow); }
         
-        h1 { font-size: 3rem; font-weight: 950; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
-        p { color: var(--muted-foreground); font-size: 1.1rem; }
+        h1 { font-size: 2.25rem; margin-bottom: 0.5rem; }
+        p { color: var(--muted); }
 
-        .registration-form { display: flex; flex-direction: column; gap: 3rem; }
+        .registration-form { display: flex; flex-direction: column; gap: 2rem; }
         
-        .smart-input-box { position: relative; background: #000; border: 2px solid var(--border); border-radius: 2rem; overflow: hidden; transition: 0.3s; }
-        .smart-plate-input { width: 100%; border: none; background: transparent; padding: 2.5rem; font-size: 3rem; font-family: 'Outfit', 'Courier New', monospace; font-weight: 950; color: white; text-transform: uppercase; letter-spacing: 6px; text-align: center; }
-        .smart-plate-input:focus { outline: none; }
+        label { display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
         
-        .smart-badge { position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 0.75rem; background: var(--surface); padding: 0.5rem 1rem; border-radius: 12px; border: 1px solid var(--border); backdrop-filter: blur(10px); }
-        .smart-label { font-size: 0.75rem; font-weight: 950; color: white; text-transform: uppercase; letter-spacing: 0.05em; }
+        .smart-input-box { position: relative; }
+        .smart-plate-input { width: 100%; background: #000; border: 2px solid var(--border); border-radius: 16px; padding: 1.25rem 1.5rem; font-size: 1.75rem; font-family: 'Courier New', monospace; font-weight: 900; color: white; text-transform: uppercase; letter-spacing: 2px; }
+        .smart-plate-input:focus { outline: none; border-color: var(--primary); }
+        
+        .smart-badge { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 0.5rem; background: var(--surface); padding: 0.4rem 0.8rem; border-radius: 8px; border: 1px solid var(--border); }
+        .smart-label { font-size: 0.7rem; font-weight: 800; color: white; text-transform: uppercase; }
 
-        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-        .input-relative { border: 1px solid var(--border); border-radius: 1.25rem; background: rgba(0,0,0,0.3); overflow: hidden; transition: 0.3s; }
-        .input-relative input { width: 100%; border: none; background: transparent; padding: 1.5rem; color: white; font-weight: 700; font-size: 1.1rem; }
-        .input-relative input:focus { outline: none; }
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .input-field input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; color: white; font-weight: 600; }
+        .input-field input:focus { outline: none; border-color: var(--primary); }
 
-        .upload-grid-premium { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.5rem; }
-        .upload-preview-focal { position: relative; aspect-ratio: 1; border-radius: 1.5rem; overflow: hidden; border: 1px solid var(--border); }
-        .upload-preview-focal img { width: 100%; height: 100%; object-fit: cover; }
-        .remove-btn { position: absolute; top: 0.75rem; right: 0.75rem; width: 32px; height: 32px; background: rgba(0,0,0,0.6); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .upload-grid { display: flex; gap: 1rem; }
+        .upload-preview { position: relative; width: 80px; height: 80px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+        .upload-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .upload-preview button { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.5); color: white; border-radius: 4px; padding: 2px; }
 
-        .upload-zone-premium { aspect-ratio: 1; border-radius: 1.5rem; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .upload-content { display: flex; flex-direction: column; align-items: center; font-size: 0.8rem; font-weight: 800; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.05em; }
+        .upload-btn { width: 80px; height: 80px; border-radius: 12px; border: 2px dashed var(--border); color: var(--muted); display: flex; align-items: center; justify-content: center; }
+        .upload-btn:hover { border-color: var(--primary); color: var(--primary); }
 
-        .verification-notice { display: flex; gap: 1.5rem; padding: 2rem; border-radius: 2rem; border: 1px solid rgba(16, 185, 129, 0.1); background: rgba(16, 185, 129, 0.02); }
-
-        .btn-primary-focal { 
-          background: var(--gradient-main); color: white; padding: 1.5rem; 
-          border-radius: 1.5rem; font-weight: 900; font-size: 1.1rem;
-          letter-spacing: 0.05em; box-shadow: 0 15px 35px var(--primary-glow); 
-          transition: 0.4s; display: flex; align-items: center; justify-content: center; gap: 1rem;
-        }
-
-        .spinner { width: 28px; height: 28px; border: 3px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .tos-pill { display: flex; align-items: center; gap: 1rem; padding: 1.25rem; border-radius: 16px; color: var(--muted); font-size: 0.85rem; line-height: 1.4; border: 1px solid rgba(255,255,255,0.03); }
 
         @media (max-width: 600px) {
-          .registration-card { padding: 3rem 1.5rem; border-radius: 2.5rem; }
+          .registration-card { padding: 2.5rem 1.5rem; border-radius: 24px; }
           .details-grid { grid-template-columns: 1fr; }
-          .smart-plate-input { font-size: 1.75rem; padding: 1.5rem; }
-          .smart-badge { display: none; }
+          .smart-plate-input { font-size: 1.5rem; }
         }
       `}</style>
     </div>
