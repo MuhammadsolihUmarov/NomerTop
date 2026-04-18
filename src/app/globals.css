@@ -349,3 +349,10 @@ button {
   color: white;
   border-color: var(--primary);
 }
+
+/* ── Utility classes ── */
+.hidden { display: none !important; }
+.cursor-pointer { cursor: pointer; }
+.text-white { color: #ffffff; }
+.text-muted { color: var(--muted-foreground); }
+.no-underline { text-decoration: none; }

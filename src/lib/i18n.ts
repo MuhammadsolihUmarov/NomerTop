@@ -7,6 +7,7 @@ export const translations = {
       logout: 'Log Out'
     },
     hero: {
+      badge: 'Global Vehicle Identity Network',
       title: 'Your License Plate is Now a Communication Hub',
       subtitle: 'The global network that turns vehicle license plates into anonymous, secure communication channels.',
       ctaSearch: 'Search Vehicle',
@@ -108,6 +109,7 @@ export const translations = {
       logout: 'Выйти'
     },
     hero: {
+      badge: 'Глобальная сеть автомобилей',
       title: 'Номерной знак — ваш профиль',
       subtitle: 'Глобальная сеть для анонимного и безопасного общения между водителями.',
       ctaSearch: 'Найти авто',
@@ -209,6 +211,7 @@ export const translations = {
       logout: 'Chiqish'
     },
     hero: {
+      badge: "Avtomobil muloqot tarmog'i",
       title: 'Mashina raqami — muloqot markazi',
       subtitle: 'Mashina raqami orqali egasiga xabar yuborishning eng oddiy va xavfsiz yo‘li.',
       ctaSearch: 'Mashina qidirish',

@@ -4,20 +4,23 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from './LanguageProvider';
-import { User, Menu, X, Globe } from 'lucide-react';
+import { User, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const { locale, setLocale, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [showLangs, setShowLangs] = useState(false);
 
-  const languages = [
-    { code: 'en', label: 'English', flag: '🇺🇸' },
-    { code: 'ru', label: 'Русский', flag: '🇷🇺' },
-    { code: 'uz', label: 'O‘zbekcha', flag: '🇺🇿' },
+  // Pill switcher: only RU and UZ
+  const mainLanguages = [
+    { code: 'ru', label: 'RU', flag: '🇷🇺' },
+    { code: 'uz', label: 'UZ', flag: '🇺🇿' },
   ];
 
-  const currentLang = languages.find(l => l.code === locale);
+  // Mobile menu: all three
+  const allLanguages = [
+    { code: 'ru', label: 'Русский', flag: '🇷🇺' },
+    { code: 'uz', label: "O'zbekcha", flag: '🇺🇿' },
+  ];
 
   return (
     <nav className="sticky-nav">
@@ -30,23 +33,27 @@ export default function Navbar() {
           .logo-text { font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; letter-spacing: -0.02em; }
           .logo-main { color: white; }
           .logo-accent { background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+          .lang-pill-switcher { display: flex; background: rgba(255,255,255,0.04); padding: 0.2rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); gap: 0.1rem; }
+          .lang-pill { display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; border-radius: 7px; font-size: 0.75rem; font-weight: 800; color: rgba(255,255,255,0.4); transition: 0.2s; letter-spacing: 0.03em; }
+          .lang-pill:hover { color: rgba(255,255,255,0.75); }
+          .lang-pill-active { background: rgba(255,255,255,0.1); color: white; }
         `}</style>
 
         {/* Desktop Nav */}
         <div className="desktop-links">
           <Link href="/search" className="no-underline">{t.nav.search}</Link>
           <Link href="/dashboard" className="no-underline">{t.nav.dashboard}</Link>
-          
-          {/* Language Switcher - Direct Toggle */}
-          <div className="lang-toggle-group">
-            {languages.filter(l => l.code !== locale).map(lang => (
-              <button 
+
+          {/* Language Switcher - RU / UZ pill */}
+          <div className="lang-pill-switcher">
+            {mainLanguages.map(lang => (
+              <button
                 key={lang.code}
                 onClick={() => setLocale(lang.code as any)}
-                className="lang-btn-quick"
+                className={`lang-pill ${locale === lang.code ? 'lang-pill-active' : ''}`}
               >
-                <span className="lang-flag-mini">{lang.flag}</span>
-                <span className="lang-text-mini">{lang.code.toUpperCase()}</span>
+                <span>{lang.flag}</span>
+                <span>{lang.label}</span>
               </button>
             ))}
           </div>
@@ -57,13 +64,6 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <style jsx>{`
-          .lang-toggle-group { display: flex; gap: 0.5rem; background: rgba(255,255,255,0.03); padding: 0.25rem; border-radius: 12px; border: 1px solid var(--border); }
-          .lang-btn-quick { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.75rem; border-radius: 8px; font-size: 0.7rem; font-weight: 850; color: var(--muted-foreground); transition: 0.2s; }
-          .lang-btn-quick:hover { background: rgba(255,255,255,0.08); color: white; }
-          .lang-text-mini { opacity: 0.6; }
-        `}</style>
-
         {/* Mobile Toggle */}
         <button className="mobile-toggle text-white" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X /> : <Menu />}
@@ -73,7 +73,7 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -82,10 +82,10 @@ export default function Navbar() {
             <div className="mobile-links">
               <Link href="/search" onClick={() => setIsOpen(false)}>{t.nav.search}</Link>
               <Link href="/dashboard" onClick={() => setIsOpen(false)}>{t.nav.dashboard}</Link>
-              
+
               <div className="mobile-lang-grid">
-                {languages.map(lang => (
-                  <button 
+                {allLanguages.map(lang => (
+                  <button
                     key={lang.code}
                     onClick={() => { setLocale(lang.code as any); setIsOpen(false); }}
                     className={locale === lang.code ? 'active' : ''}

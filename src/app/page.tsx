@@ -26,7 +26,7 @@ export default function Home() {
             className="hero-badge"
           >
              <span className="badge-pulse"></span>
-             Global Vehicle Identity Network
+             {t.hero.badge}
           </motion.div>
 
           <motion.h1 
@@ -58,7 +58,7 @@ export default function Home() {
               <Search size={22} />
             </Link>
             <Link href="/dashboard/register-plate" className="btn-glass-large">
-              {t.hero.ctaClaim}
+              <span>{t.hero.ctaClaim}</span>
             </Link>
           </motion.div>
         </div>
@@ -126,12 +126,14 @@ export default function Home() {
         .hero-title { font-size: 5rem; line-height: 1.1; margin-bottom: 2rem; background: linear-gradient(to bottom, #fff 40%, rgba(255,255,255,0.6) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
         .hero-subtitle { font-size: 1.4rem; color: var(--muted-foreground); max-width: 700px; margin: 0 auto 3.5rem; line-height: 1.6; }
 
+        .hero-actions { display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
         .btn-glass-large { 
-          background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+          background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2);
           color: white; padding: 1.25rem 2.5rem; border-radius: 1.25rem;
           font-weight: 800; font-size: 1.1rem; transition: 0.3s;
+          display: inline-flex; align-items: center; justify-content: center;
         }
-        .btn-glass-large:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateY(-3px); }
+        .btn-glass-large:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); transform: translateY(-3px); }
 
         .features-section { padding: 6rem 0; }
         .features-grid-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }
