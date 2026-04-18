@@ -2,16 +2,13 @@
 
 import Link from "next/link";
 import { Search, ShieldAlert, MessageCircle, Car, ArrowRight, ShieldCheck } from "lucide-react";
-import { useTranslation } from "@/components/LanguageProvider";
 import { motion } from "framer-motion";
 
 export default function Home() {
-  const { t } = useTranslation();
-
   const features = [
-    { icon: <ShieldAlert />, title: t.features.towing.title, desc: t.features.towing.desc, color: 'var(--primary)' },
-    { icon: <MessageCircle />, title: t.features.privacy.title, desc: t.features.privacy.desc, color: 'var(--accent)' },
-    { icon: <Car />, title: t.features.global.title, desc: t.features.global.desc, color: '#9333ea' },
+    { icon: <ShieldAlert />, title: "Prevent Towing", desc: "Get notified instantly by other drivers if your car is about to be towed.", color: 'var(--primary)' },
+    { icon: <MessageCircle />, title: "Anonymous & Secure", desc: "Communicate with vehicle owners without sharing your private phone number.", color: 'var(--accent)' },
+    { icon: <Car />, title: "Global Fleet Ready", desc: "Register any license plate from any country and start receiving messages.", color: '#9333ea' },
   ];
 
   return (
@@ -19,17 +16,12 @@ export default function Home() {
       {/* Hero */}
       <section className="hero">
         <div className="container hero-content">
-
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="font-heading"
           >
-            {t.hero.title.split(' ').map((word: string, i: number) => (
-              <span key={i} style={{ color: word.toLowerCase() === 'communication' ? 'var(--primary)' : 'inherit' }}>
-                {word}{' '}
-              </span>
-            ))}
+            Your License Plate is Now a <span style={{ color: 'var(--primary)' }}>Communication Hub</span>
           </motion.h1>
 
           <motion.p 
@@ -37,7 +29,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            {t.hero.subtitle}
+            The global network that turns vehicle license plates into anonymous, secure communication channels.
           </motion.p>
 
           <motion.div 
@@ -47,11 +39,11 @@ export default function Home() {
             className="hero-actions"
           >
             <Link href="/search" className="btn-primary-large">
-              {t.hero.ctaSearch}
+              Search Vehicle
               <Search size={20} />
             </Link>
             <Link href="/dashboard/register-plate" className="btn-secondary">
-              {t.hero.ctaClaim}
+              Claim Your Plate
             </Link>
           </motion.div>
         </div>
@@ -67,7 +59,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="feature-card glass hover-glow"
+              className="feature-card"
             >
               <div className="feature-icon" style={{ backgroundColor: `${f.color}15`, color: f.color }}>
                 {f.icon}
@@ -83,11 +75,10 @@ export default function Home() {
       <section className="quote-section">
         <div className="container">
           <div className="glass quote-card">
-            <h2>{t.footer.copy}</h2>
+            <h2>© 2026 NomerTop. Driving Digital Identity.</h2>
           </div>
         </div>
       </section>
-
     </div>
   );
 }

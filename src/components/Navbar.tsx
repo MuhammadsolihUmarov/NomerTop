@@ -1,71 +1,33 @@
 'use client';
 
 import Link from 'next/link';
-import { useTranslation } from './LanguageProvider';
-import { Globe, User, LogOut, Menu, X } from 'lucide-react';
+import { User, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
-  const { locale, setLocale, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [showLangs, setShowLangs] = useState(false);
-
-  const languages = [
-    { code: 'en', label: 'English', flag: '🇺🇸' },
-    { code: 'ru', label: 'Русский', flag: '🇷🇺' },
-    { code: 'uz', label: 'O‘zbekcha', flag: '🇺🇿' },
-  ];
-
-  const currentLang = languages.find(l => l.code === locale);
 
   return (
-    <nav className="glass sticky-nav">
+    <nav className="sticky-nav">
       <div className="container nav-content">
-        <Link href="/" className="logo-text font-heading">
-          NOMER<span>TOP</span>
+        <Link href="/" className="logo-text font-heading text-white no-underline">
+          NOMER<span className="text-blue-500">TOP</span>
         </Link>
 
         {/* Desktop Nav */}
         <div className="desktop-links">
-          <Link href="/search">{t.nav.search}</Link>
-          <Link href="/dashboard">{t.nav.dashboard}</Link>
+          <Link href="/search" className="no-underline">Search</Link>
+          <Link href="/dashboard" className="no-underline">Dashboard</Link>
           
-          <div className="lang-rel">
-            <button className="lang-btn" onClick={() => setShowLangs(!showLangs)}>
-              <span>{currentLang?.flag}</span>
-              <Globe size={18} />
-            </button>
-            <AnimatePresence>
-              {showLangs && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="lang-dropdown glass"
-                >
-                  {languages.map(lang => (
-                    <button 
-                      key={lang.code}
-                      onClick={() => { setLocale(lang.code as any); setShowLangs(false); }}
-                      className={locale === lang.code ? 'active' : ''}
-                    >
-                      {lang.flag} {lang.label}
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          <Link href="/login" className="btn-login">
+          <Link href="/login" className="btn-login no-underline">
             <User size={18} />
-            <span>{t.nav.login}</span>
+            <span>Log In</span>
           </Link>
         </div>
 
         {/* Mobile Toggle */}
-        <button className="mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
+        <button className="mobile-toggle text-white" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
@@ -77,27 +39,21 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mobile-menu glass"
+            className="mobile-container glass"
           >
-            <Link href="/search" onClick={() => setIsOpen(false)}>{t.nav.search}</Link>
-            <Link href="/dashboard" onClick={() => setIsOpen(false)}>{t.nav.dashboard}</Link>
-            <div className="mobile-langs">
-              {languages.map(lang => (
-                <button 
-                  key={lang.code}
-                  onClick={() => { setLocale(lang.code as any); setIsOpen(false); }}
-                  className={locale === lang.code ? 'active' : ''}
-                >
-                  {lang.flag}
-                </button>
-              ))}
+            <div className="mobile-links">
+              <Link href="/search" onClick={() => setIsOpen(false)}>Search</Link>
+              <Link href="/dashboard" onClick={() => setIsOpen(false)}>Dashboard</Link>
+              <Link href="/login" className="btn-primary-large" onClick={() => setIsOpen(false)}>
+                Log In
+              </Link>
             </div>
-            <Link href="/login" className="btn-primary" onClick={() => setIsOpen(false)}>
-              {t.nav.login}
-            </Link>
           </motion.div>
         )}
       </AnimatePresence>
+    </nav>
+  );
+}
 
     </nav>
   );

@@ -1,7 +1,5 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from 'sonner';
-import { LanguageProvider } from "@/components/LanguageProvider";
 import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
@@ -17,13 +15,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="midnight-theme">
-        <LanguageProvider>
           <Navbar />
           <div className="layout-root">
             {children}
           </div>
           <Toaster position="bottom-right" richColors theme="dark" />
-        </LanguageProvider>
       </body>
     </html>
   );

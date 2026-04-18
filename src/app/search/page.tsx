@@ -23,7 +23,6 @@ const detectCountry = (plate: string) => {
 };
 
 export default function SearchPage() {
-  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
