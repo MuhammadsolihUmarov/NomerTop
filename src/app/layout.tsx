@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Secure, anonymous communication for vehicle owners worldwide.",
 };
 
+import { LanguageProvider } from "@/components/LanguageProvider";
+
 export default function RootLayout({
   children,
 }: {
@@ -16,11 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="midnight-theme">
+        <LanguageProvider>
           <Navbar />
           <div className="layout-root">
             {children}
           </div>
           <Toaster position="bottom-right" richColors theme="dark" />
+        </LanguageProvider>
       </body>
     </html>
   );

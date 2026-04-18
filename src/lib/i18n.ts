@@ -1,66 +1,46 @@
-export type Locale = 'en' | 'ru' | 'uz';
-
 export const translations = {
   en: {
     nav: {
       search: 'Search',
       dashboard: 'Dashboard',
       login: 'Log In',
-      logout: 'Log Out',
+      logout: 'Disconnect'
     },
     hero: {
       title: 'Your License Plate is Now a Communication Hub',
       subtitle: 'The global network that turns vehicle license plates into anonymous, secure communication channels.',
       ctaSearch: 'Search Vehicle',
-      ctaClaim: 'Claim Your Plate',
+      ctaClaim: 'Claim Your Plate'
     },
     features: {
-      towing: {
-        title: 'Prevent Towing',
-        desc: 'Receive alerts from others before a tow truck is called if you are blocking someone.',
-      },
-      privacy: {
-        title: 'Anonymous & Secure',
-        desc: 'We never reveal your phone number. Messages are routed through our encrypted vault.',
-      },
-      global: {
-        title: 'Global Fleet Ready',
-        desc: 'Support for license plates from Uzbekistan, Russia, Kazakhstan, and more.',
-      }
+      towing: { title: 'Prevent Towing', desc: 'Get notified instantly by other drivers if your car is about to be towed.' },
+      privacy: { title: 'Anonymous & Secure', desc: 'Communicate with vehicle owners without sharing your private phone number.' },
+      global: { title: 'Global Fleet Ready', desc: 'Register any license plate from any country and start receiving messages.' }
     },
     footer: {
-      copy: '© 2026 NomerTop Global. All rights reserved.',
+      copy: '© 2026 NomerTop. Driving Digital Identity.'
     }
   },
   ru: {
     nav: {
       search: 'Поиск',
-      dashboard: 'Панель',
+      dashboard: 'Дашборд',
       login: 'Войти',
-      logout: 'Выйти',
+      logout: 'Выйти'
     },
     hero: {
-      title: 'Ваш номер — это центр общения',
-      subtitle: 'Глобальная сеть, превращающая автомобильные номера в анонимные и безопасные каналы связи.',
+      title: 'Ваш номерной знак теперь — узел связи',
+      subtitle: 'Глобальная сеть, превращающая номерные знаки автомобилей в анонимные и безопасные каналы связи.',
       ctaSearch: 'Найти авто',
-      ctaClaim: 'Зарегистрировать номер',
+      ctaClaim: 'Заявить права'
     },
     features: {
-      towing: {
-        title: 'Избегайте эвакуации',
-        desc: 'Получайте предупреждения от других водителей до того, как вызовут эвакуатор.',
-      },
-      privacy: {
-        title: 'Анонимно и безопасно',
-        desc: 'Мы никогда не раскрываем ваш номер телефона. Сообщения передаются через наше хранилище.',
-      },
-      global: {
-        title: 'Глобальная сеть',
-        desc: 'Поддержка госномеров Узбекистана, России, Казахстана и других стран.',
-      }
+      towing: { title: 'Против эвакуации', desc: 'Получайте мгновенные уведомления от других водителей, если вашу машину хотят эвакуировать.' },
+      privacy: { title: 'Анонимно и безопасно', desc: 'Общайтесь с владельцами авто, не раскрывая свой номер телефона.' },
+      global: { title: 'Для любого флота', desc: 'Регистрируйте любой номер из любой страны и начните получать сообщения.' }
     },
     footer: {
-      copy: '© 2026 NomerTop Global. Все права защищены.',
+      copy: '© 2026 NomerTop. Ведущая цифровая идентичность.'
     }
   },
   uz: {
@@ -68,30 +48,23 @@ export const translations = {
       search: 'Qidiruv',
       dashboard: 'Dashboard',
       login: 'Kirish',
-      logout: 'Chiqish',
+      logout: 'Chiqish'
     },
     hero: {
-      title: 'Avtomobil raqamingiz — bu muloqot markazi',
+      title: 'Avtomobil raqami endi aloqa markazi',
       subtitle: 'Avtomobil raqamlarini anonim va xavfsiz aloqa kanallariga aylantiruvchi global tarmoq.',
-      ctaSearch: 'Avtoni qidirish',
-      ctaClaim: 'Raqamni ro‘yxatdan o‘tkazish',
+      ctaSearch: 'Avtomobilni qidirish',
+      ctaClaim: 'Raqamni biriktirish'
     },
     features: {
-      towing: {
-        title: 'Evakuatsiyadan saqlaning',
-        desc: 'Boshqalarni to‘sib qo‘ygan bo‘lsangiz, evakuator chaqirilishidan oldin ogohlantirish oling.',
-      },
-      privacy: {
-        title: 'Anonim va xavfsiz',
-        desc: 'Biz sizning telefon raqamingizni hech qachon oshkor qilmaymiz. Xabarlar bizning maxfiy omborimiz orqali o‘tadi.',
-      },
-      global: {
-        title: 'Global tarmoq',
-        desc: 'O‘zbekiston, Rossiya, Qozog‘iston va boshqa davlatlar davlat raqamlarini qo‘llab-quvvatlash.',
-      }
+      towing: { title: 'Evakuatsiyaga stop', desc: 'Agar mashinangizni olib ketishmoqchi bo‘lsa, boshqa haydovchilardan darhol xabar oling.' },
+      privacy: { title: 'Anonim va Xavfsiz', desc: 'Shaxsiy telefon raqamingizni oshkor qilmasdan avtomobil egalari bilan muloqot qiling.' },
+      global: { title: 'Global Tayyorlik', desc: 'Istalgan davlat raqamini ro‘yxatdan o‘tkazing va xabarlarni qabul qiling.' }
     },
     footer: {
-      copy: '© 2026 NomerTop Global. Barcha huquqlar himoyalangan.',
+      copy: '© 2026 NomerTop. Raqamli identifikatsiya yetakchisi.'
     }
   }
 };
+
+export type Locale = keyof typeof translations;

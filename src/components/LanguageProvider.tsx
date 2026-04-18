@@ -1,40 +1,35 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Locale, translations } from '@/lib/i18n';
+import { translations, Locale } from '@/lib/i18n';
 
 interface LanguageContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: any;
+  t: typeof translations.en;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocale] = useState<Locale>('en');
+  const [locale, setLocaleState] = useState<Locale>('en');
 
-  // Load from localStorage if available
   useEffect(() => {
-    const saved = localStorage.getItem('nomertop-locale') as Locale;
-    if (saved && (saved === 'en' || saved === 'ru' || saved === 'uz')) {
-      setLocale(saved);
+    const saved = localStorage.getItem('nomer-top-locale') as Locale;
+    if (saved && translations[saved]) {
+      setLocaleState(saved);
     }
   }, []);
 
-  const changeLocale = (newLocale: Locale) => {
-    setLocale(newLocale);
-    localStorage.setItem('nomertop-locale', newLocale);
+  const setLocale = (newLocale: Locale) => {
+    setLocaleState(newLocale);
+    localStorage.setItem('nomer-top-locale', newLocale);
   };
 
-  const value = {
-    locale,
-    setLocale: changeLocale,
-    t: translations[locale]
-  };
+  const t = translations[locale];
 
   return (
-    <LanguageContext.Provider value={value}>
+    <LanguageContext.Provider value={{ locale, setLocale, t }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -42,7 +37,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
 export function useTranslation() {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useTranslation must be used within a LanguageProvider');
   }
   return context;
