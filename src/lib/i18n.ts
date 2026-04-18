@@ -46,23 +46,23 @@ export const translations = {
   uz: {
     nav: {
       search: 'Qidiruv',
-      dashboard: 'Dashboard',
+      dashboard: 'Profil',
       login: 'Kirish',
       logout: 'Chiqish'
     },
     hero: {
-      title: 'Avtomobil raqami endi aloqa markazi',
-      subtitle: 'Avtomobil raqamlarini anonim va xavfsiz aloqa kanallariga aylantiruvchi global tarmoq.',
-      ctaSearch: 'Avtomobilni qidirish',
-      ctaClaim: 'Raqamni biriktirish'
+      title: 'Mashina raqami orqali bog‘laning',
+      subtitle: 'Mashina raqami orqali egasiga xabar yuborishning eng oddiy va xavfsiz yo‘li.',
+      ctaSearch: 'Egasi bilan bog‘lanish',
+      ctaClaim: 'Nomerimni ulash'
     },
     features: {
-      towing: { title: 'Evakuatsiyaga stop', desc: 'Agar mashinangizni olib ketishmoqchi bo‘lsa, boshqa haydovchilardan darhol xabar oling.' },
-      privacy: { title: 'Anonim va Xavfsiz', desc: 'Shaxsiy telefon raqamingizni oshkor qilmasdan avtomobil egalari bilan muloqot qiling.' },
-      global: { title: 'Global Tayyorlik', desc: 'Istalgan davlat raqamini ro‘yxatdan o‘tkazing va xabarlarni qabul qiling.' }
+      towing: { title: 'Evakuatsiyaga yo‘l bermang', desc: 'Mashinangizni olib ketishayotgan bo‘lsa, darhol xabar olasiz.' },
+      privacy: { title: 'Shaxsiy muloqot', desc: 'Telefon raqamingizni bermasdan mashina egasi bilan gaplashing.' },
+      global: { title: 'Hamma davlatlar uchun', desc: 'Istalgan davlat raqamini ro‘yxatdan o‘tkazing va xabar oling.' }
     },
     footer: {
-      copy: '© 2026 NomerTop. Raqamli identifikatsiya yetakchisi.'
+      copy: '© 2026 NomerTop. Avtomobil egalari tarmog‘i.'
     }
   }
 };
