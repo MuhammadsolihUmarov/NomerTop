@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, CheckCircle, MessageSquare, ArrowLeft, Clock, ShieldCheck, Camera, Share2 } from 'lucide-react';
+import { Send, CheckCircle, MessageSquare, ArrowLeft, Clock, ShieldCheck, Camera, Share2, Shield } from 'lucide-react';
 import { formatPlateDisplay } from '@/lib/utils';
 import { sendMessage } from '@/lib/actions';
 import { toast } from 'sonner';
@@ -146,8 +146,14 @@ export default function PlateDetailView({ plateNumber, isRegistered, plateData }
                 className="dispatch-focal glass"
               >
                 <div className="dispatch-header">
-                  <MessageSquare size={20} className="glow-icon" />
-                  <h2>{t.plateDetail.dispatch}</h2>
+                  <div className="title-row">
+                    <MessageSquare size={24} className="glow-icon" />
+                    <h2>{t.plateDetail.dispatch}</h2>
+                  </div>
+                  <div className="privacy-badge glass">
+                    <Shield size={14} className="text-secondary" />
+                    <span>{t.hero.trust.privacy}</span>
+                  </div>
                 </div>
 
                 <div className="quick-signal-grid">
@@ -280,9 +286,11 @@ export default function PlateDetailView({ plateNumber, isRegistered, plateData }
         .privacy-memo { color: var(--muted-foreground); font-size: 1.1rem; line-height: 1.8; max-width: 600px; margin-top: 3rem; border-left: 4px solid var(--primary); padding-left: 2rem; background: rgba(99, 102, 241, 0.03); padding: 1.5rem 2rem; border-radius: 0 1.5rem 1.5rem 0; }
 
         .dispatch-focal { padding: 5rem; border-radius: 4rem; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 30px 80px -20px rgba(0,0,0,0.5); }
-        .dispatch-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 4rem; }
+        .dispatch-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; margin-bottom: 4.5rem; }
+        .dispatch-header .title-row { display: flex; align-items: center; gap: 1.5rem; }
+        .privacy-badge { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; border-radius: 1rem; font-size: 0.8rem; font-weight: 800; color: var(--muted-foreground); border-color: rgba(16, 185, 129, 0.1); background: rgba(16, 185, 129, 0.02); }
         .glow-icon { color: var(--primary); filter: drop-shadow(0 0 15px var(--primary-glow)); }
-        .dispatch-header h2 { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.02em; }
+        .dispatch-header h2 { font-size: 2.75rem; font-weight: 950; letter-spacing: -0.02em; }
 
         .quick-signal-grid { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-bottom: 4rem; }
         .signal-pill { 

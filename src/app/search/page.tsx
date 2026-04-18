@@ -56,31 +56,35 @@ export default function SearchPage() {
             }} 
             className="search-form"
           >
-            <div className="input-wrapper">
-              <input 
-                name="query"
-                type="text" 
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t.search.placeholder}
-                className="plate-input-focal"
-                autoFocus
-                required
-              />
-              
-              <AnimatePresence>
-                {detected && (
-                  <motion.div 
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    className="country-indicator"
-                  >
-                    <span className="indicator-flag">{detected.flag}</span>
-                    <span className="indicator-name">{detected.name}</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            <div className="input-wrapper group">
+              <label className="label-premium">{t.registration.plateNumber}</label>
+              <div className="input-relative focus-ring">
+                <input 
+                  name="query"
+                  type="text" 
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="00 A 000 AA"
+                  className="plate-input-focal"
+                  autoFocus
+                  required
+                />
+                
+                <AnimatePresence>
+                  {detected && (
+                    <motion.div 
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      className="country-indicator"
+                    >
+                      <span className="indicator-flag">{detected.flag}</span>
+                      <span className="indicator-name">{detected.name}</span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              <p className="input-example-hint">{t.search.placeholder}</p>
             </div>
             
             <button 
@@ -97,6 +101,11 @@ export default function SearchPage() {
               )}
             </button>
             
+            <div className="trust-footer-hint">
+              <Shield size={14} className="text-secondary" />
+              <span>{t.hero.trust.privacy}</span>
+            </div>
+
             {!detected && query.length > 3 && (
               <div className="hint-text">
                 <AlertCircle size={14} />
@@ -113,9 +122,9 @@ export default function SearchPage() {
       </div>
 
       <style jsx>{`
-        .search-page-midnight { padding: 8rem 0; min-height: 90vh; display: flex; align-items: center; position: relative; }
+        .search-page-midnight { padding: 4rem 0 8rem; min-height: 90vh; display: flex; align-items: center; position: relative; }
         .search-container { 
-          padding: 6rem 4rem; border-radius: 4rem; text-align: center; max-width: 650px; margin: 0 auto;
+          padding: 5rem 4rem; border-radius: 4rem; text-align: center; max-width: 650px; margin: 0 auto;
           box-shadow: 0 40px 100px -20px rgba(0,0,0,0.8);
         }
         
@@ -128,28 +137,31 @@ export default function SearchPage() {
         .scan-line { position: absolute; width: 100%; height: 2px; background: var(--primary); top: 0; animation: scan 2s linear infinite; box-shadow: 0 0 15px var(--primary); }
         @keyframes scan { 0% { top: 0 } 100% { top: 100% } }
 
-        h1 { font-size: 3rem; font-weight: 900; margin-bottom: 0.75rem; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h1 { font-size: 3.5rem; font-weight: 950; margin-bottom: 0.75rem; letter-spacing: -0.03em; }
         p { color: var(--muted-foreground); margin-bottom: 4rem; font-size: 1.1rem; }
 
-        .search-form { position: relative; }
-        .input-wrapper { position: relative; margin-bottom: 2rem; }
+        .search-form { position: relative; text-align: left; }
+        .input-wrapper { position: relative; margin-bottom: 2.5rem; }
+        .input-relative { position: relative; border-radius: 1.5rem; border: 2px solid var(--border); overflow: hidden; transition: 0.3s; }
         
         .plate-input-focal { 
           width: 100%;
           background: rgba(0,0,0,0.4); 
-          border: 2px solid var(--border); 
-          border-radius: 1.5rem; 
-          padding: 2rem; 
-          font-size: 2.5rem; 
+          border: none;
+          padding: 2.5rem; 
+          font-size: 3.5rem; 
           font-family: 'Outfit', 'Courier New', monospace; 
-          font-weight: 900; 
+          font-weight: 950; 
           text-align: center; 
           color: white; 
-          letter-spacing: 6px; 
+          letter-spacing: 8px; 
           text-transform: uppercase;
           transition: 0.3s;
         }
-        .plate-input-focal:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.6); box-shadow: 0 0 40px var(--primary-glow); }
+        .plate-input-focal::placeholder { color: rgba(255,255,255,0.1); }
+        .plate-input-focal:focus { outline: none; background: rgba(0,0,0,0.6); }
+
+        .input-example-hint { font-size: 0.85rem; color: var(--muted-foreground); font-weight: 700; text-align: center; margin-top: 1rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.6; }
 
         .country-indicator {
           position: absolute;
@@ -165,23 +177,21 @@ export default function SearchPage() {
           border: 1px solid var(--border);
           backdrop-filter: blur(10px);
         }
-        .indicator-flag { font-size: 1.5rem; }
-        .indicator-name { font-size: 0.8rem; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        .hint-text { margin-top: 1.5rem; color: var(--muted-foreground); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 700; opacity: 0.6; }
+        .trust-footer-hint { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 2rem; color: var(--muted-foreground); font-size: 0.9rem; font-weight: 600; }
 
         .search-badges { margin-top: 5rem; display: flex; justify-content: center; gap: 3rem; }
         .badge { display: flex; align-items: center; gap: 0.75rem; font-size: 0.8rem; color: var(--muted-foreground); font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; }
         .badge span { color: var(--foreground); }
 
-        .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .spinner { width: 30px; height: 30px; border: 4px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         @media (max-width: 600px) {
           .search-container { padding: 4rem 1.5rem; }
-          .plate-input-focal { font-size: 1.75rem; padding: 1.5rem; }
+          .plate-input-focal { font-size: 2rem; padding: 1.5rem; }
           .country-indicator { display: none; }
-          h1 { font-size: 2rem; }
+          h1 { font-size: 2.25rem; }
         }
       `}</style>
     </div>
