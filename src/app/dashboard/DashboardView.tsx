@@ -226,22 +226,6 @@ export default function DashboardView({ user, plates, notifications }: Dashboard
         .btn-add-fleet { display: flex; align-items: center; justify-content: center; gap: 1rem; width: 100%; padding: 1.25rem; background: white; color: black; border-radius: 1.5rem; font-weight: 800; margin-bottom: 2rem; }
         .btn-add-fleet:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 
-        .btn-logout { width: 100%; display: flex; align-items: center; gap: 0.75rem; color: var(--muted-foreground); font-size: 0.9rem; font-weight: 600; padding: 1rem; border-radius: 1rem; }
-        .btn-logout:hover { color: #ef4444; background: rgba(239, 68, 68, 0.05); }
-
-        .view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem; }
-        .header-meta h2 { font-size: 3rem; font-weight: 800; margin-bottom: 0.5rem; }
-        .header-meta p { color: var(--muted-foreground); font-size: 1.1rem; }
-
-        .plates-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2.5rem; }
-        .asset-card { padding: 2.5rem; border-radius: 2.5rem; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-        .asset-card.hover-glow:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); }
-        
-        .mini-plate { font-family: 'Courier New', monospace; font-weight: 900; font-size: 1.75rem; letter-spacing: 3px; color: white; border-bottom: 3px solid var(--primary); padding-bottom: 0.5rem; width: fit-content; margin-bottom: 2rem; }
-        
-        .status-tag { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 800; padding: 6px 14px; border-radius: 99rem; border: 1px solid transparent; text-transform: uppercase; }
-        .status-tag.approved { background: rgba(16, 185, 129, 0.1); color: var(--primary); border-color: rgba(16, 185, 129, 0.2); }
-        .status-tag.pending { background: rgba(245, 158, 11, 0.1); color: var(--accent); border-color: rgba(245, 158, 11, 0.2); }
 
         .asset-header { display: flex; justify-content: space-between; align-items: flex-start; }
         .asset-details { margin-bottom: 2.5rem; }

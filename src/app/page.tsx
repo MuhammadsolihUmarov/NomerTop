@@ -1,95 +1,168 @@
+'use client';
+
 import Link from "next/link";
-import { Search, ShieldAlert, MessageCircle, Car } from "lucide-react";
+import { Search, ShieldAlert, MessageCircle, Car, ArrowRight, ShieldCheck } from "lucide-react";
+import { useTranslation } from "@/components/LanguageProvider";
+import { motion } from "framer-motion";
 
 export default function Home() {
+  const { t } = useTranslation();
+
+  const features = [
+    { icon: <ShieldAlert />, title: t.features.towing.title, desc: t.features.towing.desc, color: 'var(--primary)' },
+    { icon: <MessageCircle />, title: t.features.privacy.title, desc: t.features.privacy.desc, color: 'var(--accent)' },
+    { icon: <Car />, title: t.features.global.title, desc: t.features.global.desc, color: '#9333ea' },
+  ];
+
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#fafafa", minHeight: "100vh", color: "#111" }}>
-      {/* Navigation */}
-      <nav style={{ display: "flex", justifyContent: "space-between", padding: "1.5rem 5%", alignItems: "center", borderBottom: "1px solid #eaeaea", backgroundColor: "white" }}>
-        <div style={{ fontWeight: "900", fontSize: "1.5rem", letterSpacing: "-0.05em" }}>NomerTop</div>
-        <div style={{ display: "flex", gap: "1rem" }}>
-          <Link href="/login" style={{ padding: "0.5rem 1rem", fontWeight: "bold", color: "#666", textDecoration: "none" }}>Log In</Link>
-          <Link href="/dashboard" style={{ padding: "0.5rem 1rem", fontWeight: "bold", backgroundColor: "#111", color: "white", borderRadius: "8px", textDecoration: "none" }}>Go to Fleet</Link>
+    <div className="landing-page">
+      {/* Hero */}
+      <section className="hero">
+        <div className="container hero-content">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="status-chip glass"
+          >
+            <ShieldCheck size={16} />
+            <span>GLOBAL PROTOCOL ACTIVE</span>
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="font-heading"
+          >
+            {t.hero.title.split(' ').map((word: string, i: number) => (
+              <span key={i} style={{ color: word.toLowerCase() === 'communication' ? 'var(--primary)' : 'inherit' }}>
+                {word}{' '}
+              </span>
+            ))}
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            {t.hero.subtitle}
+          </motion.p>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="hero-actions"
+          >
+            <Link href="/search" className="btn-primary-large">
+              {t.hero.ctaSearch}
+              <Search size={20} />
+            </Link>
+            <Link href="/dashboard/register-plate" className="btn-secondary">
+              {t.hero.ctaClaim}
+            </Link>
+          </motion.div>
         </div>
-      </nav>
+      </section>
 
-      {/* Hero Section */}
-      <header style={{ padding: "8rem 5%", maxWidth: "1000px", margin: "0 auto", textAlign: "center" }}>
-        <h1 style={{ fontSize: "4.5rem", fontWeight: "900", lineHeight: "1.1", marginBottom: "1.5rem", letterSpacing: "-0.03em" }}>
-          Your License Plate is Now a <span style={{ color: "#2563eb" }}>Communication Hub.</span>
-        </h1>
-        <p style={{ fontSize: "1.35rem", color: "#555", marginBottom: "3rem", maxWidth: "800px", margin: "0 auto 3rem", lineHeight: "1.6" }}>
-          The global network that turns vehicle license plates into anonymous, secure communication channels. Need to contact the owner of a parked car? Just scan the plate.
-        </p>
-        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-          <Link href="/search" style={{ padding: "1.25rem 2.5rem", backgroundColor: "#2563eb", color: "white", borderRadius: "12px", fontWeight: "bold", fontSize: "1.2rem", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
-            Search a Vehicle <Search size={20} />
-          </Link>
-          <Link href="/dashboard/register-plate" style={{ padding: "1.25rem 2.5rem", backgroundColor: "white", color: "#111", border: "2px solid #eaeaea", borderRadius: "12px", fontWeight: "bold", fontSize: "1.2rem", textDecoration: "none" }}>
-            Claim Your Plate
-          </Link>
+      {/* Features */}
+      <section className="features-grid">
+        <div className="container grid-wrap">
+          {features.map((f, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="feature-card glass hover-glow"
+            >
+              <div className="feature-icon" style={{ backgroundColor: `${f.color}15`, color: f.color }}>
+                {f.icon}
+              </div>
+              <h3>{f.title}</h3>
+              <p>{f.desc}</p>
+            </motion.div>
+          ))}
         </div>
-      </header>
+      </section>
 
-      {/* Features Grid */}
-      <section style={{ padding: "5rem 5%", backgroundColor: "white", borderTop: "1px solid #eaeaea" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "2.5rem", fontWeight: "800", textAlign: "center", margin: "0 0 4rem 0" }}>Why use NomerTop?</h2>
-          
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "3rem" }}>
-            
-            {/* Feature 1 */}
-            <div style={{ padding: "2.5rem", border: "1px solid #eaeaea", borderRadius: "24px", backgroundColor: "#fafafa" }}>
-              <div style={{ width: "60px", height: "60px", backgroundColor: "#dbeafe", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.5rem", color: "#2563eb" }}>
-                <ShieldAlert size={28} />
-              </div>
-              <h3 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1rem" }}>Prevent Towing</h3>
-              <p style={{ color: "#666", lineHeight: "1.7", fontSize: "1.1rem" }}>
-                Blocking someone in? Left your lights on? Anyone can look up your license plate and send you a critical alert before a tow truck is called.
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div style={{ padding: "2.5rem", border: "1px solid #eaeaea", borderRadius: "24px", backgroundColor: "#fafafa" }}>
-              <div style={{ width: "60px", height: "60px", backgroundColor: "#dcfce7", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.5rem", color: "#16a34a" }}>
-                <MessageCircle size={28} />
-              </div>
-              <h3 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1rem" }}>Anonymous & Secure</h3>
-              <p style={{ color: "#666", lineHeight: "1.7", fontSize: "1.1rem" }}>
-                We never reveal your phone number or identity. Messages are securely routed through our encrypted vault directly to your dashboard.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div style={{ padding: "2.5rem", border: "1px solid #eaeaea", borderRadius: "24px", backgroundColor: "#fafafa" }}>
-              <div style={{ width: "60px", height: "60px", backgroundColor: "#f3e8ff", borderRadius: "16px", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.5rem", color: "#9333ea" }}>
-                <Car size={28} />
-              </div>
-              <h3 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "1rem" }}>Global Fleet Ready</h3>
-              <p style={{ color: "#666", lineHeight: "1.7", fontSize: "1.1rem" }}>
-                Manage multiple vehicles across borders. We natively support license plate formats for Uzbekistan, Russia, Kazakhstan, and more.
-              </p>
-            </div>
-
+      {/* Trust Quote */}
+      <section className="quote-section">
+        <div className="container">
+          <div className="glass quote-card">
+            <h2>{t.footer.copy}</h2>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section style={{ padding: "6rem 5%", backgroundColor: "#111", color: "white", textAlign: "center" }}>
-        <h2 style={{ fontSize: "3rem", fontWeight: "800", marginBottom: "1.5rem" }}>Own Your Identity on the Road.</h2>
-        <p style={{ fontSize: "1.25rem", color: "#999", maxWidth: "600px", margin: "0 auto 3rem", lineHeight: "1.6" }}>
-          Registering takes 30 seconds. Verify your vehicle and never miss a critical street-side notification again.
-        </p>
-        <Link href="/login" style={{ padding: "1.25rem 3rem", backgroundColor: "white", color: "#111", borderRadius: "99px", fontWeight: "800", fontSize: "1.25rem", textDecoration: "none", display: "inline-block" }}>
-          Start Now for Free
-        </Link>
-      </section>
+      <style jsx>{`
+        .landing-page { padding-bottom: 8rem; }
+        .hero { padding: 8rem 0; text-align: center; }
+        .hero-content { max-width: 900px; }
+        
+        .status-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.5rem 1rem;
+          border-radius: 99rem;
+          font-size: 0.75rem;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          color: var(--accent);
+          margin-bottom: 2rem;
+        }
 
-      {/* Footer */}
-      <footer style={{ padding: "3rem 5%", textAlign: "center", borderTop: "1px solid #eaeaea", backgroundColor: "white" }}>
-        <p style={{ color: "#888", fontWeight: "bold" }}>© 2026 NomerTop Global. All rights reserved.</p>
-      </footer>
+        h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 2rem; }
+        p { font-size: 1.25rem; color: var(--muted); margin-bottom: 4rem; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+
+        .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        
+        .btn-primary-large {
+          background: var(--primary);
+          color: white;
+          padding: 1.25rem 2.5rem;
+          border-radius: 16px;
+          font-weight: 800;
+          font-size: 1.1rem;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          box-shadow: 0 10px 40px var(--primary-glow);
+          transition: 0.3s;
+        }
+        .btn-primary-large:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+        .btn-secondary {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          color: white;
+          padding: 1.25rem 2.50rem;
+          border-radius: 16px;
+          font-weight: 800;
+          font-size: 1.1rem;
+          transition: 0.3s;
+        }
+        .btn-secondary:hover { background: var(--surface-hover); }
+
+        .grid-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; }
+        .feature-card { padding: 3rem; border-radius: 32px; transition: 0.3s; }
+        .feature-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .feature-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; }
+        .feature-icon :global(svg) { width: 28px; height: 28px; }
+        h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .feature-card p { font-size: 1rem; color: var(--muted); margin: 0; text-align: left; }
+
+        .quote-section { padding: 4rem 0; }
+        .quote-card { padding: 4rem; border-radius: 40px; text-align: center; }
+        .quote-card h2 { font-size: 1.5rem; color: var(--muted); font-weight: 600; }
+
+        @media (max-width: 768px) {
+          h1 { font-size: 2.75rem; }
+          .hero { padding: 4rem 0; }
+        }
+      `}</style>
     </div>
   );
 }
