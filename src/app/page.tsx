@@ -1,66 +1,46 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "4rem 2rem", maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
+      <header style={{ marginBottom: "4rem" }}>
+        <h1 style={{ fontSize: "3rem", margin: "0 0 1rem 0" }}>NomerTop</h1>
+        <p style={{ fontSize: "1.2rem", color: "#666" }}>The Global Vehicle Identity Network</p>
+      </header>
+
+      <main>
+        <section style={{ marginBottom: "4rem" }}>
+          <p style={{ fontSize: "1.1rem", lineHeight: "1.6" }}>
+            Securely register your vehicle license plate to receive anonymous, encrypted messages. 
+            Search for other vehicles worldwide to alert owners of issues, parking problems, or emergencies.
           </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        </section>
+
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", justifyContent: "center" }}>
+          <Link 
+            href="/search" 
+            style={{ padding: "1rem 2rem", background: "#10b981", color: "white", textDecoration: "none", borderRadius: "8px", fontWeight: "bold" }}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Search Fleet
+          </Link>
+          <Link 
+            href="/dashboard" 
+            style={{ padding: "1rem 2rem", background: "#3b82f6", color: "white", textDecoration: "none", borderRadius: "8px", fontWeight: "bold" }}
           >
-            Documentation
-          </a>
+            My Dashboard
+          </Link>
+          <Link 
+            href="/login" 
+            style={{ padding: "1rem 2rem", background: "#f3f4f6", color: "#374151", textDecoration: "none", borderRadius: "8px", fontWeight: "bold", border: "1px solid #d1d5db" }}
+          >
+            Login / Register
+          </Link>
         </div>
       </main>
+
+      <footer style={{ marginTop: "6rem", borderTop: "1px solid #eaeaea", paddingTop: "2rem", color: "#888", fontSize: "0.9rem" }}>
+        <p>© 2026 NomerTop</p>
+      </footer>
     </div>
   );
 }
