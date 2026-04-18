@@ -97,30 +97,48 @@ export default function LoginPage() {
       </div>
 
       <style jsx>{`
-        .login-focal-page { padding: 4rem 0; min-height: 90vh; display: flex; align-items: center; }
-        .container { max-width: 480px; margin: 0 auto; width: 100%; padding: 0 1.5rem; }
+        .login-focal-page { padding: 4rem 0; min-height: 90vh; display: flex; align-items: center; position: relative; }
+        .container { max-width: 500px; margin: 0 auto; width: 100%; padding: 0 1.5rem; }
         
-        .auth-card-premium { padding: 4rem; border-radius: 3rem; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .auth-card-premium { 
+          padding: 5rem 4rem; border-radius: 4rem; text-align: center; 
+          background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+          border: 1px solid rgba(255,255,255,0.1);
+          box-shadow: 0 50px 100px -20px rgba(0,0,0,0.6);
+        }
         
-        .auth-icon-wrap { width: 70px; height: 70px; background: rgba(99, 102, 241, 0.1); border-radius: 1.5rem; display: flex; align-items: center; justify-content: center; color: var(--secondary); margin: 0 auto 2rem; box-shadow: 0 0 30px var(--secondary-glow); }
+        .auth-icon-wrap { 
+          width: 80px; height: 80px; background: rgba(99, 102, 241, 0.15); border-radius: 1.75rem; 
+          display: flex; align-items: center; justify-content: center; color: var(--primary); 
+          margin: 0 auto 3rem; box-shadow: 0 0 40px var(--primary-glow); 
+        }
         
-        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; }
-        p { color: var(--muted-foreground); margin-bottom: 3rem; font-size: 0.95rem; }
+        h1 { font-size: 3rem; font-weight: 950; margin-bottom: 0.75rem; letter-spacing: -0.02em; }
+        p { color: var(--muted-foreground); margin-bottom: 4rem; font-size: 1.1rem; }
 
-        .auth-focal-form { display: flex; flex-direction: column; gap: 2rem; text-align: left; }
-        .focal-group label { display: block; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted-foreground); margin-bottom: 0.75rem; }
+        .auth-focal-form { display: flex; flex-direction: column; gap: 2.5rem; text-align: left; }
+        .focal-group label { display: block; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted-foreground); margin-bottom: 1rem; }
         
         .focal-input-wrap { position: relative; display: flex; align-items: center; }
-        .focal-icon { position: absolute; left: 1.25rem; color: var(--muted-foreground); transition: color 0.3s; }
+        .focal-icon { position: absolute; left: 1.5rem; color: var(--muted-foreground); transition: color 0.3s; }
         
-        .focal-input-wrap input { width: 100%; padding: 1.25rem 1.25rem 1.25rem 3.5rem; border-radius: 1.25rem; border: 1px solid var(--border); background: rgba(0,0,0,0.3); color: white; font-size: 1rem; transition: all 0.3s; }
-        .focal-input-wrap input:focus { outline: none; border-color: var(--secondary); background: rgba(0,0,0,0.5); }
-        .focal-input-wrap input:focus + .focal-icon { color: var(--secondary); }
+        .focal-input-wrap input { 
+          width: 100%; padding: 1.5rem 1.75rem 1.5rem 4rem; border-radius: 1.5rem; 
+          border: 1px solid var(--border); background: rgba(0,0,0,0.4); 
+          color: white; font-size: 1.1rem; transition: all 0.4s; font-family: inherit;
+        }
+        .focal-input-wrap input:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.6); box-shadow: 0 0 50px var(--primary-glow); }
+        .focal-input-wrap input:focus + .focal-icon { color: var(--primary); }
 
-        .auth-error { display: flex; align-items: center; gap: 0.75rem; color: #ef4444; font-size: 0.85rem; padding: 1rem; border-radius: 1rem; border-color: rgba(239, 68, 68, 0.2); }
+        .auth-error { display: flex; align-items: center; gap: 1rem; color: #f43f5e; font-size: 0.95rem; padding: 1.25rem; border-radius: 1.25rem; background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.2); }
         
-        .btn-primary-focal { background: var(--secondary); color: white; padding: 1.25rem; border-radius: 1.25rem; font-weight: 800; letter-spacing: 0.1em; box-shadow: 0 10px 20px var(--secondary-glow); width: 100%; }
-        .btn-primary-focal:hover { transform: translateY(-3px); filter: brightness(1.1); }
+        .btn-primary-focal { 
+          background: var(--gradient-main); color: white; padding: 1.5rem; 
+          border-radius: 1.5rem; font-weight: 900; font-size: 1.1rem;
+          letter-spacing: 0.05em; box-shadow: 0 15px 35px var(--primary-glow); 
+          width: 100%; transition: 0.4s;
+        }
+        .btn-primary-focal:hover:not(:disabled) { transform: translateY(-5px); filter: brightness(1.1); box-shadow: 0 20px 45px var(--primary-glow); }
 
         .auth-footer { margin-top: 3rem; font-size: 0.9rem; color: var(--muted-foreground); }
         .auth-footer a { color: var(--secondary); font-weight: 800; }

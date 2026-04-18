@@ -37,33 +37,18 @@ export default function Navbar() {
           <Link href="/search" className="no-underline">{t.nav.search}</Link>
           <Link href="/dashboard" className="no-underline">{t.nav.dashboard}</Link>
           
-          {/* Language Switcher */}
-          <div className="lang-relative">
-            <button className="lang-toggle" onClick={() => setShowLangs(!showLangs)}>
-              <span>{currentLang?.flag}</span>
-              <Globe size={16} />
-            </button>
-            <AnimatePresence>
-              {showLangs && (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="lang-popover glass"
-                >
-                  {languages.map(lang => (
-                    <button 
-                      key={lang.code}
-                      onClick={() => { setLocale(lang.code as any); setShowLangs(false); }}
-                      className={locale === lang.code ? 'active' : ''}
-                    >
-                      <span>{lang.flag}</span>
-                      <span>{lang.label}</span>
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
+          {/* Language Switcher - Direct Toggle */}
+          <div className="lang-toggle-group">
+            {languages.filter(l => l.code !== locale).map(lang => (
+              <button 
+                key={lang.code}
+                onClick={() => setLocale(lang.code as any)}
+                className="lang-btn-quick"
+              >
+                <span className="lang-flag-mini">{lang.flag}</span>
+                <span className="lang-text-mini">{lang.code.toUpperCase()}</span>
+              </button>
+            ))}
           </div>
 
           <Link href="/login" className="btn-login no-underline">
@@ -71,6 +56,13 @@ export default function Navbar() {
             <span>{t.nav.login}</span>
           </Link>
         </div>
+
+        <style jsx>{`
+          .lang-toggle-group { display: flex; gap: 0.5rem; background: rgba(255,255,255,0.03); padding: 0.25rem; border-radius: 12px; border: 1px solid var(--border); }
+          .lang-btn-quick { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.75rem; border-radius: 8px; font-size: 0.7rem; font-weight: 850; color: var(--muted-foreground); transition: 0.2s; }
+          .lang-btn-quick:hover { background: rgba(255,255,255,0.08); color: white; }
+          .lang-text-mini { opacity: 0.6; }
+        `}</style>
 
         {/* Mobile Toggle */}
         <button className="mobile-toggle text-white" onClick={() => setIsOpen(!isOpen)}>
@@ -98,7 +90,8 @@ export default function Navbar() {
                     onClick={() => { setLocale(lang.code as any); setIsOpen(false); }}
                     className={locale === lang.code ? 'active' : ''}
                   >
-                    {lang.flag} {lang.label}
+                    <span className="mobile-flag">{lang.flag}</span>
+                    <span className="mobile-lang-label">{lang.label}</span>
                   </button>
                 ))}
               </div>

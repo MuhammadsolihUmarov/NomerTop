@@ -212,7 +212,7 @@ export const translations = {
       title: 'Mashina raqami — muloqot markazi',
       subtitle: 'Mashina raqami orqali egasiga xabar yuborishning eng oddiy va xavfsiz yo‘li.',
       ctaSearch: 'Mashina qidirish',
-      ctaClaim: 'Raqamni ulash'
+      ctaClaim: 'Raqam ulash'
     },
     features: {
       towing: { title: 'Evakuatsiyaga yo‘l bermang', desc: 'Mashinangizni olib ketishayotgan bo‘lsa, darhol xabar olasiz.' },
