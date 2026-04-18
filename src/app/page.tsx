@@ -19,14 +19,6 @@ export default function Home() {
       {/* Hero */}
       <section className="hero">
         <div className="container hero-content">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="status-chip glass"
-          >
-            <ShieldCheck size={16} />
-            <span>GLOBAL PROTOCOL ACTIVE</span>
-          </motion.div>
 
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -98,24 +90,11 @@ export default function Home() {
 
       <style jsx>{`
         .landing-page { padding-bottom: 8rem; }
-        .hero { padding: 8rem 0; text-align: center; }
-        .hero-content { max-width: 900px; }
+        .hero { padding: 5rem 0; text-align: center; }
+        .hero-content { max-width: 800px; }
         
-        .status-chip {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.75rem;
-          padding: 0.5rem 1rem;
-          border-radius: 99rem;
-          font-size: 0.75rem;
-          font-weight: 800;
-          letter-spacing: 0.1em;
-          color: var(--accent);
-          margin-bottom: 2rem;
-        }
-
-        h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 2rem; }
-        p { font-size: 1.25rem; color: var(--muted); margin-bottom: 4rem; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+        h1 { font-size: 2.75rem; line-height: 1.2; margin-bottom: 1.5rem; }
+        p { font-size: 1.1rem; color: var(--muted); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
 
         .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         

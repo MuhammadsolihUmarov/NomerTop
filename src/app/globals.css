@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --background: #050507;
+  --background: #0d0d12;
   --foreground: #ffffff;
-  --surface: #0f0f12;
-  --surface-hover: #16161a;
+  --surface: #16161c;
+  --surface-hover: #1e1e26;
   --primary: #3b82f6;
-  --primary-glow: rgba(59, 130, 246, 0.4);
+  --primary-glow: rgba(59, 130, 246, 0.25);
   --accent: #10b981;
-  --accent-glow: rgba(16, 185, 129, 0.4);
-  --muted: #88888b;
-  --border: rgba(255, 255, 255, 0.08);
-  --glass: rgba(15, 15, 18, 0.7);
+  --accent-glow: rgba(16, 185, 129, 0.25);
+  --muted: #94949e;
+  --border: rgba(255, 255, 255, 0.06);
+  --glass: rgba(22, 22, 28, 0.75);
 }
 
 * {
@@ -35,8 +35,8 @@ body {
 
 h1, h2, h3, h4, .font-heading {
   font-family: 'Outfit', sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 a {
