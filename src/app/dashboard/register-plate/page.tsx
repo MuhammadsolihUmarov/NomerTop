@@ -55,6 +55,15 @@ export default function RegisterPlate() {
     }
   };
 
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPhotos([...photos, url]);
+      toast.success('Photo added to registration');
+    }
+  };
+
   return (
     <div className="register-page-midnight">
       <div className="container">
@@ -128,9 +137,15 @@ export default function RegisterPlate() {
                   </div>
                 ))}
                 {photos.length < 3 && (
-                  <button type="button" className="upload-btn" onClick={() => setPhotos([...photos, 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400'])}>
+                  <label className="upload-btn cursor-pointer">
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      className="hidden" 
+                      onChange={handlePhotoUpload}
+                    />
                     <Camera size={20} />
-                  </button>
+                  </label>
                 )}
               </div>
             </div>
