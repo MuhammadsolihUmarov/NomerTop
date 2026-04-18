@@ -22,9 +22,15 @@ export default function Navbar() {
   return (
     <nav className="sticky-nav">
       <div className="container nav-content">
-        <Link href="/" className="logo-text font-heading text-white no-underline">
-          NOMER<span className="text-blue-500">TOP</span>
+        <Link href="/" className="logo-text no-underline">
+          <span className="logo-main">NOMER</span><span className="logo-accent">TOP</span>
         </Link>
+
+        <style jsx>{`
+          .logo-text { font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 1.5rem; letter-spacing: -0.02em; }
+          .logo-main { color: white; }
+          .logo-accent { background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        `}</style>
 
         {/* Desktop Nav */}
         <div className="desktop-links">

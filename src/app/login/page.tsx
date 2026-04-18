@@ -5,8 +5,10 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { User, Lock, AlertCircle } from 'lucide-react';
+import { useTranslation } from '@/components/LanguageProvider';
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -25,7 +27,7 @@ export default function LoginPage() {
     });
 
     if (result?.error) {
-      setError('Invalid email or password');
+      setError(t.auth.invalid);
       setIsLoading(false);
     } else {
       router.push('/dashboard');
@@ -43,18 +45,18 @@ export default function LoginPage() {
         >
           <div className="auth-header">
             <div className="auth-icon-wrap"><Lock size={32} /></div>
-            <h1>Secure Portal</h1>
-            <p>Authentication required for fleet management access.</p>
+            <h1>{t.auth.title}</h1>
+            <p>{t.auth.subtitle}</p>
           </div>
 
           <form onSubmit={handleLogin} className="auth-focal-form">
             <div className="focal-group">
-              <label>Email Address</label>
+              <label>{t.auth.email}</label>
               <div className="focal-input-wrap">
                 <User size={18} className="focal-icon" />
                 <input 
                   type="email" 
-                  placeholder="commander@nomertop.com" 
+                  placeholder="name@example.com" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -63,7 +65,7 @@ export default function LoginPage() {
             </div>
 
             <div className="focal-group">
-              <label>Security Key</label>
+              <label>{t.auth.password}</label>
               <div className="focal-input-wrap">
                 <Lock size={18} className="focal-icon" />
                 <input 
@@ -84,12 +86,12 @@ export default function LoginPage() {
             )}
 
             <button type="submit" className="btn-primary-focal" disabled={isLoading}>
-              {isLoading ? <div className="spinner"></div> : 'INITIATE SESSION'}
+              {isLoading ? <div className="spinner"></div> : t.auth.loginBtn}
             </button>
           </form>
 
           <footer className="auth-footer">
-            <p>New operative? <a href="/register">Create new identity</a></p>
+            <p>{t.auth.newUser} <a href="/register">{t.auth.createAccount}</a></p>
           </footer>
         </motion.div>
       </div>

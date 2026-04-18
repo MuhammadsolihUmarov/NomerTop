@@ -7,6 +7,8 @@ import { ArrowLeft, Car, ChevronRight, Camera, X, Shield, Globe } from 'lucide-r
 import { registerPlate } from '@/lib/actions';
 import { toast } from 'sonner';
 
+import { useTranslation } from '@/components/LanguageProvider';
+
 const detectCountry = (plate: string) => {
   const clean = plate.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
   if (!clean) return { code: 'OTH', flag: '🌐', name: 'Global' };
@@ -19,6 +21,7 @@ const detectCountry = (plate: string) => {
 };
 
 export default function RegisterPlate() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [formData, setFormData] = useState({
@@ -49,7 +52,7 @@ export default function RegisterPlate() {
       toast.error(result.error);
       setIsLoading(false);
     } else {
-      toast.success('Vehicle registered and secured!');
+      toast.success(t.registration.success);
       router.push('/dashboard');
       router.refresh();
     }
@@ -60,7 +63,7 @@ export default function RegisterPlate() {
     if (file) {
       const url = URL.createObjectURL(file);
       setPhotos([...photos, url]);
-      toast.success('Photo added to registration');
+      toast.success(t.registration.photoSuccess);
     }
   };
 
@@ -70,7 +73,7 @@ export default function RegisterPlate() {
         <header className="page-header">
           <button onClick={() => router.back()} className="btn-back glass">
             <ArrowLeft size={16} />
-            <span>Dashboard</span>
+            <span>{t.nav.dashboard}</span>
           </button>
         </header>
 
@@ -81,13 +84,13 @@ export default function RegisterPlate() {
         >
           <div className="form-header">
             <div className="icon-badge"><Car size={24} /></div>
-            <h1>Register Vehicle</h1>
-            <p>Connect your license plate to your digital identity.</p>
+            <h1>{t.registration.title}</h1>
+            <p>{t.registration.subtitle}</p>
           </div>
 
           <form onSubmit={handleAction} className="registration-form">
             <div className="input-group">
-              <label>Plate Number</label>
+              <label>{t.registration.plateNumber}</label>
               <div className="smart-input-box">
                 <input 
                   type="text" 
@@ -106,20 +109,20 @@ export default function RegisterPlate() {
 
             <div className="details-grid">
               <div className="input-field">
-                <label>Manufacturer</label>
+                <label>{t.registration.brand}</label>
                 <input 
                   type="text" 
-                  placeholder="e.g. BMW" 
+                  placeholder="Chevrolet" 
                   value={formData.brand}
                   onChange={(e) => setFormData({...formData, brand: e.target.value})}
                   required
                 />
               </div>
               <div className="input-field">
-                <label>Model</label>
+                <label>{t.registration.model}</label>
                 <input 
                   type="text" 
-                  placeholder="e.g. M5" 
+                  placeholder="Cobalt" 
                   value={formData.model}
                   onChange={(e) => setFormData({...formData, model: e.target.value})}
                   required
@@ -128,7 +131,7 @@ export default function RegisterPlate() {
             </div>
 
             <div className="photo-section">
-              <label>Vehicle Photos</label>
+              <label>{t.registration.photos}</label>
               <div className="upload-grid">
                 {photos.map((url, i) => (
                   <div key={i} className="upload-preview">
@@ -152,13 +155,13 @@ export default function RegisterPlate() {
 
             <div className="tos-pill glass">
               <Shield size={16} />
-              <span>I verify that I own this vehicle and will follow community guidelines.</span>
+              <span>{t.registration.tos}</span>
             </div>
 
             <button type="submit" className="btn-primary-large" disabled={isLoading} style={{ width: '100%', marginTop: '2rem' }}>
               {isLoading ? <div className="spinner"></div> : (
                 <>
-                  <span>Complete Registration</span>
+                  <span>{t.registration.submit}</span>
                   <ChevronRight size={18} />
                 </>
               )}

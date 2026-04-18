@@ -23,6 +23,7 @@ const detectCountry = (plate: string) => {
 };
 
 export default function SearchPage() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
@@ -40,8 +41,8 @@ export default function SearchPage() {
             <div className="scan-icon-wrap">
               {isSearching ? <div className="scan-line" /> : <Search size={32} />}
             </div>
-            <h1 className="font-heading">Smart Vehicle Search</h1>
-            <p>Enter any license plate. We'll handle the rest.</p>
+            <h1 className="font-heading">{t.search.title}</h1>
+            <p>{t.search.subtitle}</p>
           </div>
 
           <form 
@@ -61,7 +62,7 @@ export default function SearchPage() {
                 type="text" 
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="e.g. 01 A 777 AA"
+                placeholder={t.search.placeholder}
                 className="plate-input-focal"
                 autoFocus
                 required
@@ -90,7 +91,7 @@ export default function SearchPage() {
             >
               {isSearching ? <div className="spinner"></div> : (
                 <>
-                  <span>Locate Owner</span>
+                  <span>{t.search.button}</span>
                   <Car size={20} />
                 </>
               )}
@@ -99,47 +100,56 @@ export default function SearchPage() {
             {!detected && query.length > 3 && (
               <div className="hint-text">
                 <AlertCircle size={14} />
-                <span>Detection engine: Universal Mode</span>
+                <span>{t.search.hint}</span>
               </div>
             )}
           </form>
 
           <div className="search-badges">
-            <div className="badge"><Shield size={14} /> <span>Anonymous Identity</span></div>
-            <div className="badge"><Globe size={14} /> <span>Global Coverage</span></div>
+            <div className="badge"><Shield size={14} /> <span>{t.search.badgeAnon}</span></div>
+            <div className="badge"><Globe size={14} /> <span>{t.search.badgeGlobal}</span></div>
           </div>
         </motion.div>
       </div>
 
       <style jsx>{`
-        .search-page-midnight { padding: 4rem 0 8rem; min-height: 80vh; display: flex; align-items: center; }
-        .search-container { padding: 5rem 4rem; border-radius: 40px; text-align: center; max-width: 600px; margin: 0 auto; }
+        .search-page-midnight { padding: 8rem 0; min-height: 90vh; display: flex; align-items: center; position: relative; }
+        .search-container { 
+          padding: 6rem 4rem; border-radius: 4rem; text-align: center; max-width: 650px; margin: 0 auto;
+          box-shadow: 0 40px 100px -20px rgba(0,0,0,0.8);
+        }
         
-        .scan-icon-wrap { width: 80px; height: 80px; background: var(--surface); border-radius: 20px; display: flex; align-items: center; justify-content: center; color: var(--primary); margin: 0 auto 2.5rem; position: relative; overflow: hidden; }
-        .scan-line { position: absolute; width: 100%; height: 2px; background: var(--primary); top: 0; animation: scan 2s linear infinite; }
-        @keyframes scan { 0% { top: 0 } 50% { top: 100% } 100% { top: 0 } }
+        .scan-icon-wrap { 
+          width: 90px; height: 90px; background: rgba(99, 102, 241, 0.1); border-radius: 2rem; 
+          display: flex; align-items: center; justify-content: center; color: var(--primary); 
+          margin: 0 auto 3rem; position: relative; overflow: hidden;
+          box-shadow: 0 0 30px var(--primary-glow);
+        }
+        .scan-line { position: absolute; width: 100%; height: 2px; background: var(--primary); top: 0; animation: scan 2s linear infinite; box-shadow: 0 0 15px var(--primary); }
+        @keyframes scan { 0% { top: 0 } 100% { top: 100% } }
 
-        h1 { fontSize: 2.25rem; margin-bottom: 0.5rem; }
-        p { color: var(--muted); margin-bottom: 3.5rem; font-size: 1rem; }
+        h1 { font-size: 3rem; font-weight: 900; margin-bottom: 0.75rem; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { color: var(--muted-foreground); margin-bottom: 4rem; font-size: 1.1rem; }
 
         .search-form { position: relative; }
-        .input-wrapper { position: relative; margin-bottom: 1.5rem; }
+        .input-wrapper { position: relative; margin-bottom: 2rem; }
         
         .plate-input-focal { 
           width: 100%;
-          background: #000; 
+          background: rgba(0,0,0,0.4); 
           border: 2px solid var(--border); 
-          border-radius: 16px; 
-          padding: 1.5rem 2rem; 
-          font-size: 2rem; 
-          font-family: 'Courier New', monospace; 
+          border-radius: 1.5rem; 
+          padding: 2rem; 
+          font-size: 2.5rem; 
+          font-family: 'Outfit', 'Courier New', monospace; 
           font-weight: 900; 
           text-align: center; 
           color: white; 
-          letter-spacing: 4px; 
+          letter-spacing: 6px; 
           text-transform: uppercase;
+          transition: 0.3s;
         }
-        .plate-input-focal:focus { outline: none; border-color: var(--primary); }
+        .plate-input-focal:focus { outline: none; border-color: var(--primary); background: rgba(0,0,0,0.6); box-shadow: 0 0 40px var(--primary-glow); }
 
         .country-indicator {
           position: absolute;
@@ -148,27 +158,30 @@ export default function SearchPage() {
           transform: translateY(-50%);
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: 0.75rem;
           background: var(--surface);
-          padding: 0.4rem 0.8rem;
-          border-radius: 10px;
+          padding: 0.5rem 1rem;
+          border-radius: 12px;
           border: 1px solid var(--border);
+          backdrop-filter: blur(10px);
         }
-        .indicator-flag { font-size: 1.25rem; }
-        .indicator-name { font-size: 0.75rem; font-weight: 800; color: white; text-transform: uppercase; }
+        .indicator-flag { font-size: 1.5rem; }
+        .indicator-name { font-size: 0.8rem; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        .hint-text { margin-top: 1rem; color: var(--muted); font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 600; }
+        .hint-text { margin-top: 1.5rem; color: var(--muted-foreground); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 700; opacity: 0.6; }
 
-        .search-badges { margin-top: 3.5rem; display: flex; justify-content: center; gap: 2rem; }
-        .badge { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--muted); font-weight: 700; text-transform: uppercase; }
+        .search-badges { margin-top: 5rem; display: flex; justify-content: center; gap: 3rem; }
+        .badge { display: flex; align-items: center; gap: 0.75rem; font-size: 0.8rem; color: var(--muted-foreground); font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; }
+        .badge span { color: var(--foreground); }
 
-        .spinner { width: 22px; height: 22px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .spinner { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         @media (max-width: 600px) {
-          .search-container { padding: 3rem 1.5rem; }
-          .plate-input-focal { font-size: 1.5rem; padding: 1rem; }
+          .search-container { padding: 4rem 1.5rem; }
+          .plate-input-focal { font-size: 1.75rem; padding: 1.5rem; }
           .country-indicator { display: none; }
+          h1 { font-size: 2rem; }
         }
       `}</style>
     </div>
