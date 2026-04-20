@@ -39,3 +39,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Python backend
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/.pytest_cache/
+backend/*.db
+*.pyc
+
+# E2E test artifacts
+/playwright-report/
+/test-results/
+
+# SQLite databases
+*.db
+prisma/dev.db

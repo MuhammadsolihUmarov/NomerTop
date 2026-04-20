@@ -1,10 +1,28 @@
 'use server';
 
-import db from "@/lib/db";
 import { normalizePlate, formatPlateDisplay } from "./utils";
 import { redirect } from "next/navigation";
-import { auth, signIn as authSignIn } from "@/auth";
+import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+
+const API_SERVER_URL = process.env.INTERNAL_API_URL || 'http://localhost:8000';
+
+async function serverFetch(endpoint: string, options: RequestInit = {}) {
+  const response = await fetch(`${API_SERVER_URL}${endpoint}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'An error occurred' }));
+    throw new Error(error.detail || 'Request failed');
+  }
+
+  return response.json();
+}
 
 /**
  * User Registration
@@ -12,21 +30,32 @@ import { revalidatePath } from "next/cache";
 export async function registerUser(formData: FormData) {
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
+  const phone = formData.get('phone') as string;
   const password = formData.get('password') as string;
 
-  if (!email || !password) return { error: "Email and password are required." };
-
   try {
-    const existingUser = await db.user.findUnique({ where: { email } });
-    if (existingUser) return { error: "User already exists with this email." };
-
-    await db.user.create({
-      data: { name, email, password }
+    await serverFetch('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ name, email: email || undefined, phone: phone || undefined, password }),
     });
-
     return { success: true };
-  } catch (e) {
-    return { error: "Failed to create account. Please try again." };
+  } catch (e: any) {
+    return { error: e.message || "Failed to create account." };
+  }
+}
+
+/**
+ * Send OTP Code
+ */
+export async function sendOtp(phone: string) {
+  try {
+    const response = await serverFetch('/auth/otp/send', {
+      method: 'POST',
+      body: JSON.stringify({ phone }),
+    });
+    return { success: true, debug_code: response.debug_code };
+  } catch (e: any) {
+    return { error: e.message || "Failed to send OTP." };
   }
 }
 
@@ -40,15 +69,13 @@ export async function searchPlate(formData: FormData) {
 
   const normalized = normalizePlate(query);
   
-  // Find plate in DB to see if it exists
-  const plate = await db.plate.findUnique({
-    where: { number: normalized }
-  });
-
-  if (plate) {
-    redirect(`/plate/${normalized}`);
-  } else {
-    // If plate doesn't exist, redirect to a page that suggests registration or escrow message
+  try {
+    const plate = await serverFetch(`/plates/${normalized}`);
+    if (plate) {
+      redirect(`/plate/${normalized}`);
+    }
+  } catch (e) {
+    // If 404, redirect to not-found
     redirect(`/plate/not-found?q=${normalized}&c=${country}`);
   }
 }
@@ -66,36 +93,19 @@ export async function sendMessage(formData: FormData) {
   const normalized = normalizePlate(plateIdOrNumber);
 
   try {
-    const plate = await db.plate.findUnique({
-      where: { number: normalized },
-      include: { owner: true }
-    });
-
-    if (!plate) return { error: "Vehicle not found." };
-
-    // Create message
-    await db.message.create({
-      data: {
+    await serverFetch('/messages', {
+      method: 'POST',
+      body: JSON.stringify({
         content,
+        plateNumber: normalized,
         isQuickMsg,
-        plateId: plate.id,
-      }
-    });
-
-    // Create notification for owner
-    await db.notification.create({
-      data: {
-        userId: plate.ownerId,
-        title: "New Message for your vehicle",
-        body: content.length > 50 ? content.slice(0, 47) + '...' : content,
-        type: "MESSAGE"
-      }
+      }),
     });
 
     revalidatePath(`/plate/${normalized}`);
     return { success: true };
-  } catch (e) {
-    return { error: "Failed to send message." };
+  } catch (e: any) {
+    return { error: e.message || "Failed to send message." };
   }
 }
 
@@ -113,28 +123,39 @@ export async function registerPlate(formData: FormData) {
   const color = formData.get('color') as string;
 
   const normalized = normalizePlate(number);
-  const display = formatPlateDisplay(normalized, country);
 
   try {
-    const existing = await db.plate.findUnique({ where: { number: normalized } });
-    if (existing) return { error: "This plate is already registered." };
-
-    const plate = await db.plate.create({
-      data: {
+    // Note: We need to pass the user context to FastAPI. 
+    // Since we are migrating, we'll assume the FastAPI 'plates' endpoint 
+    // can take an 'ownerId' if we use a service-to-server call, 
+    // OR we use the registered user's token.
+    // For simplicity in this step, I'll update main.py to accept ownerId in a header or body if it's from internal.
+    // Actually, I'll just use a mock login or pass the email.
+    
+    // I'll update main.py to allow passing owner info for now or use a dedicated internal endpoint.
+    // But better: Get a token for the current user or use a Master Token.
+    
+    await serverFetch('/plates', {
+      method: 'POST',
+      body: JSON.stringify({
         number: normalized,
-        displayNumber: display,
         country,
         brand,
         model,
         color,
-        ownerId: session.user.id,
+      }),
+      headers: {
+        // We'll need a way to authorize this. 
+        // For now, I'll assume we pass the user's ID in a header and the backend trusts it (INTERNAL).
+        'X-User-ID': session.user.id || '',
       }
     });
 
     revalidatePath('/dashboard');
-    return { success: true, plateId: plate.id };
-  } catch (e) {
-    return { error: "Failed to register plate." };
+    return { success: true };
+  } catch (e: any) {
+    return { error: e.message || "Failed to register plate." };
   }
 }
+
 

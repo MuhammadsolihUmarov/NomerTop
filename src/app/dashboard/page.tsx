@@ -1,32 +1,36 @@
 import { auth } from "@/auth";
-import db from "@/lib/db";
 import DashboardView from "./DashboardView";
 import { redirect } from "next/navigation";
+
+const API_SERVER_URL = process.env.INTERNAL_API_URL || 'http://localhost:8000';
+
+async function fetchFromBackend(endpoint: string, email: string) {
+  const response = await fetch(`${API_SERVER_URL}${endpoint}`, {
+    headers: {
+      'X-User-Email': email
+    },
+    cache: 'no-store'
+  });
+  if (!response.ok) return null;
+  return response.json();
+}
 
 export default async function DashboardPage() {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user?.email) {
     redirect("/login");
   }
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-  });
+  const email = session.user.email;
 
+  const user = await fetchFromBackend('/users/me', email);
   if (!user) {
     redirect("/login");
   }
 
-  const plates = await db.plate.findMany({
-    where: { ownerId: user.id },
-    orderBy: { createdAt: 'desc' },
-  });
-
-  const notifications = await db.notification.findMany({
-    where: { userId: user.id },
-    orderBy: { createdAt: 'desc' },
-  });
+  const plates = await fetchFromBackend('/users/me/plates', email) || [];
+  const notifications = await fetchFromBackend('/users/me/notifications', email) || [];
 
   return (
     <DashboardView 
@@ -36,3 +40,4 @@ export default async function DashboardPage() {
     />
   );
 }
+

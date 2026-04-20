@@ -22,11 +22,25 @@ export const translations = {
       title: 'Secure Portal',
       subtitle: 'Authentication required for access.',
       email: 'Email Address',
+      phone: 'Phone Number',
       password: 'Security Key',
+      otp: 'Verification Token (OTP)',
       loginBtn: 'LOG IN',
-      invalid: 'Invalid email or password',
+      invalid: 'Invalid credentials',
       newUser: 'New user?',
-      createAccount: 'Create account'
+      createAccount: 'Create account',
+      systemAccess: 'System Access',
+      secureEntry: 'Secure Entry',
+      passAuthDesc: 'Authenticate via global credentials.',
+      otpAuthDesc: 'Verify your identity via mobile OTP.',
+      phoneLabel: 'Assigned Mobile Number',
+      passLabel: 'Access Protocol (Password)',
+      requestCode: 'Request code',
+      resendCode: 'Resend code',
+      initializeSession: 'INITIALIZE SESSION',
+      establishLink: 'ESTABLISH LINK',
+      loginModePass: 'Password',
+      loginModeOtp: 'Phone OTP'
     },
     registration: {
       title: 'Register Vehicle',
@@ -38,7 +52,14 @@ export const translations = {
       tos: 'I verify that I own this vehicle and will follow community guidelines.',
       submit: 'Complete Registration',
       success: 'Vehicle registered and secured!',
-      photoSuccess: 'Photo added to registration'
+      photoSuccess: 'Photo added to registration',
+      fullName: 'Full Operative Name',
+      commEmail: 'Communication Email',
+      phone: 'Mobile Phone',
+      securityKey: 'Security Key',
+      enlistNow: 'ENLIST NOW',
+      alreadyEnlisted: 'Already enlisted?',
+      verifyIdentity: 'Verify Identity'
     },
     search: {
       title: 'Smart Vehicle Search',
@@ -98,7 +119,13 @@ export const translations = {
       ]
     },
     footer: {
-      copy: '© 2026 NomerTop. Driving Digital Identity.'
+      tagline: 'Simple, fast and with delivery to any point of Uzbekistan',
+      navigation: 'Navigation',
+      support: 'Support',
+      contacts: 'Contacts',
+      agreement: 'User Agreement',
+      privacy: 'Privacy Policy',
+      rights: 'All rights reserved.'
     }
   },
   ru: {
@@ -124,11 +151,25 @@ export const translations = {
       title: 'Вход в систему',
       subtitle: 'Пожалуйста, авторизуйтесь для продолжения.',
       email: 'Электронная почта',
-      password: 'Пароль',
+      phone: 'Номер телефона',
+      password: 'Ключ доступа',
+      otp: 'Одноразовый код (OTP)',
       loginBtn: 'ВОЙТИ',
-      invalid: 'Неверный email или пароль',
+      invalid: 'Неверные данные для входа',
       newUser: 'Нет аккаунта?',
-      createAccount: 'Создать профиль'
+      createAccount: 'Создать профиль',
+      systemAccess: 'Доступ в систему',
+      secureEntry: 'Безопасный вход',
+      passAuthDesc: 'Авторизация через глобальные учетные данные.',
+      otpAuthDesc: 'Подтвердите личность через SMS-код.',
+      phoneLabel: 'Привязанный номер телефона',
+      passLabel: 'Протокол доступа (Пароль)',
+      requestCode: 'Получить код',
+      resendCode: 'Переотправить код',
+      initializeSession: 'ИНИЦИАЛИЗИРОВАТЬ СЕССИЮ',
+      establishLink: 'УСТАНОВИТЬ СВЯЗЬ',
+      loginModePass: 'Пароль',
+      loginModeOtp: 'SMS Код'
     },
     registration: {
       title: 'Регистрация транспорта',
@@ -140,7 +181,14 @@ export const translations = {
       tos: 'Я подтверждаю, что владею этим автомобилем.',
       submit: 'Завершить регистрацию',
       success: 'Транспорт успешно добавлен!',
-      photoSuccess: 'Фотография сохранена'
+      photoSuccess: 'Фотография сохранена',
+      fullName: 'Полное имя оператора',
+      commEmail: 'Email для связи',
+      phone: 'Мобильный телефон',
+      securityKey: 'Ключ безопасности',
+      enlistNow: 'ЗАРЕГИСТРИРОВАТЬСЯ',
+      alreadyEnlisted: 'Уже есть профиль?',
+      verifyIdentity: 'Подтвердить личность'
     },
     search: {
       title: 'Умный поиск авто',
@@ -200,7 +248,13 @@ export const translations = {
       ]
     },
     footer: {
-      copy: '© 2026 NomerTop. Ведущая цифровая идентичность.'
+      tagline: 'Просто, быстро и с доставкой в любую точку Узбекистана',
+      navigation: 'Навигация',
+      support: 'Поддержка',
+      contacts: 'Контакты',
+      agreement: 'Пользовательское соглашение',
+      privacy: 'Политика конфиденциальности',
+      rights: 'Все права защищены.'
     }
   },
   uz: {
@@ -226,11 +280,25 @@ export const translations = {
       title: 'Kirish',
       subtitle: 'Davom etish uchun tizimga kiring.',
       email: 'Email manzili',
-      password: 'Parol',
+      phone: 'Telefon raqami',
+      password: 'Kirish kaliti',
+      otp: 'Tasdiqlash kodi (OTP)',
       loginBtn: 'KIRISH',
-      invalid: 'Email yoki parol xato',
+      invalid: 'Ma’lumotlar xato entered',
       newUser: 'Hali ro‘yxatdan o‘tmaganmisiz?',
-      createAccount: 'Ro‘yxatdan o‘tish'
+      createAccount: 'Ro‘yxatdan o‘tish',
+      systemAccess: 'Tizimga kirish',
+      secureEntry: 'Xavfsiz kirish',
+      passAuthDesc: 'Global hisob ma’lumotlari orqali kirish.',
+      otpAuthDesc: 'SMS kod orqali shaxsingizni tasdiqlang.',
+      phoneLabel: 'Biriktirilgan telefon raqami',
+      passLabel: "Kirish protokoli (Parol)",
+      requestCode: 'Kod olish',
+      resendCode: 'Kodni qayta yuborish',
+      initializeSession: 'SESSIYANI BOSHLASH',
+      establishLink: 'ALOQA O‘RNATISH',
+      loginModePass: 'Parol',
+      loginModeOtp: 'SMS Kod'
     },
     registration: {
       title: 'Mashinani qo‘shish',
@@ -242,7 +310,14 @@ export const translations = {
       tos: 'Bu mashina menga tegishli ekanligini tasdiqlayman.',
       submit: 'Saqlash',
       success: 'Mashina muvaffaqiyatli qo‘shildi!',
-      photoSuccess: 'Rasm qo‘shildi'
+      photoSuccess: 'Rasm qo‘shildi',
+      fullName: 'To‘liq ism-sharif',
+      commEmail: 'Email manzili',
+      phone: 'Mobil telefon',
+      securityKey: 'Xavfsizlik kaliti',
+      enlistNow: 'RO‘YXATDAN O‘TISH',
+      alreadyEnlisted: 'Profilingiz bormi?',
+      verifyIdentity: 'Tasdiqlash'
     },
     search: {
       title: 'Aqlli qidiruv',
@@ -302,7 +377,13 @@ export const translations = {
       ]
     },
     footer: {
-      copy: '© 2026 NomerTop. Avtomobil egalari tarmog‘i.'
+      tagline: 'Oddiy, tez va O‘zbekistonning istalgan nuqtasiga yetkazib berish bilan',
+      navigation: 'Navigatsiya',
+      support: 'Yordam',
+      contacts: 'Kontaktlar',
+      agreement: 'Foydalanuvchi shartnomasi',
+      privacy: 'Maxfiylik siyosati',
+      rights: 'Barcha huquqlar himoyalangan.'
     }
   }
 };
