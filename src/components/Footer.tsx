@@ -56,11 +56,11 @@ export default function Footer() {
       <style jsx>{`
         .footer-premium {
           position: relative;
-          padding: 6rem 0 3rem;
+          padding: 3rem 0 2rem;
           background: #050508;
           border-top: 1px solid rgba(255, 255, 255, 0.05);
           overflow: hidden;
-          margin-top: 4rem;
+          margin-top: 2rem;
         }
 
         .mesh-bg-footer {
@@ -87,8 +87,8 @@ export default function Footer() {
           display: flex;
           justify-content: space-between;
           flex-wrap: wrap;
-          gap: 3rem;
-          margin-bottom: 4rem;
+          gap: 2rem;
+          margin-bottom: 2rem;
         }
 
         .footer-brand {

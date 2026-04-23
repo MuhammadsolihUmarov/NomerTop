@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ' *)",
+      "Bash(node -e ' *)",
+      "Bash(npx --prefix \"c:/Users/Muhammadsolih/IdeaProjects/Welltech/NomerTop\" tsc --noEmit)",
+      "Bash(git add *)"
+    ]
+  }
+}

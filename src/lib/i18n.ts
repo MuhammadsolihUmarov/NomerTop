@@ -7,16 +7,17 @@ export const translations = {
       logout: 'Log Out'
     },
     hero: {
-      badge: 'Global Vehicle Identity Network',
-      title: 'Your License Plate is Now a Communication Hub',
-      subtitle: 'The global network that turns vehicle license plates into anonymous, secure communication channels.',
-      ctaSearch: 'Search Vehicle',
-      ctaClaim: 'Claim Your Plate'
+      badge: 'Message any car. Stay anonymous.',
+      title: 'Message any driver — no phone number needed',
+      subtitle: "Car blocking you? Lights still on? Type the plate, write a message. They get it. You stay anonymous.",
+      ctaSearch: 'Find a Car',
+      ctaClaim: 'Add My Car',
+      steps: ['Enter plate', 'Write message', 'Owner gets it']
     },
     features: {
-      towing: { title: 'Prevent Towing', desc: 'Get notified instantly by other drivers if your car is about to be towed.' },
-      privacy: { title: 'Anonymous & Secure', desc: 'Communicate with vehicle owners without sharing your private phone number.' },
-      global: { title: 'Global Fleet Ready', desc: 'Register any license plate from any country and start receiving messages.' }
+      towing: { title: 'Beat the tow truck', desc: 'Someone nearby spots it and messages your plate. You make it in time.' },
+      privacy: { title: 'Your number stays hidden', desc: 'The owner gets your message. Not your number.' },
+      global: { title: 'Any plate works', desc: 'Uzbekistan, Russia, Kazakhstan — any country, any plate.' }
     },
     auth: {
       title: 'Secure Portal',
@@ -40,7 +41,9 @@ export const translations = {
       initializeSession: 'INITIALIZE SESSION',
       establishLink: 'ESTABLISH LINK',
       loginModePass: 'Password',
-      loginModeOtp: 'Phone OTP'
+      loginModeOtp: 'Phone OTP',
+      signupTitle: 'Create account',
+      signupSub: 'Quick, free, anonymous.'
     },
     registration: {
       title: 'Register Vehicle',
@@ -120,6 +123,7 @@ export const translations = {
     },
     footer: {
       tagline: 'Simple, fast and with delivery to any point of Uzbekistan',
+      copy: 'Type a plate. Write a message. Stay anonymous.',
       navigation: 'Navigation',
       support: 'Support',
       contacts: 'Contacts',
@@ -136,16 +140,17 @@ export const translations = {
       logout: 'Выйти'
     },
     hero: {
-      badge: 'Глобальная сеть автомобилей',
-      title: 'Номерной знак — ваш профиль',
-      subtitle: 'Глобальная сеть для анонимного и безопасного общения между водителями.',
+      badge: 'Пишите водителям анонимно',
+      title: 'Напишите любому водителю — без телефона',
+      subtitle: 'Машина мешает? Фары не выключены? Введите номер, напишите — получит. Ваш номер не виден.',
       ctaSearch: 'Найти авто',
-      ctaClaim: 'Добавить номер'
+      ctaClaim: 'Добавить машину',
+      steps: ['Введите номер', 'Напишите', 'Водитель получит']
     },
     features: {
-      towing: { title: 'Против эвакуации', desc: 'Узнайте мгновенно, если вашу машину хотят эвакуировать.' },
-      privacy: { title: 'Анонимно и безопасно', desc: 'Общайтесь, не раскрывая свой личный номер телефона.' },
-      global: { title: 'Любые страны', desc: 'Регистрируйте номер любой страны и получайте сообщения.' }
+      towing: { title: 'Успейте до эвакуатора', desc: 'Кто-то рядом увидит и напишет вам. Вы успеете.' },
+      privacy: { title: 'Ваш номер не виден', desc: 'Водитель получит сообщение. Ваш номер — нет.' },
+      global: { title: 'Любой номер подойдёт', desc: 'Узбекистан, Россия, Казахстан — любая страна.' }
     },
     auth: {
       title: 'Вход в систему',
@@ -169,7 +174,9 @@ export const translations = {
       initializeSession: 'ИНИЦИАЛИЗИРОВАТЬ СЕССИЮ',
       establishLink: 'УСТАНОВИТЬ СВЯЗЬ',
       loginModePass: 'Пароль',
-      loginModeOtp: 'SMS Код'
+      loginModeOtp: 'SMS Код',
+      signupTitle: 'Создать аккаунт',
+      signupSub: 'Быстро, бесплатно, анонимно.'
     },
     registration: {
       title: 'Регистрация транспорта',
@@ -249,6 +256,7 @@ export const translations = {
     },
     footer: {
       tagline: 'Просто, быстро и с доставкой в любую точку Узбекистана',
+      copy: 'Введите номер. Напишите. Анонимно.',
       navigation: 'Навигация',
       support: 'Поддержка',
       contacts: 'Контакты',
@@ -259,79 +267,82 @@ export const translations = {
   },
   uz: {
     nav: {
-      search: 'Qidiruv',
+      search: 'Izlash',
       dashboard: 'Kabinet',
       login: 'Kirish',
       logout: 'Chiqish'
     },
     hero: {
-      badge: "Avtomobil muloqot tarmog'i",
-      title: 'Mashina raqami — muloqot markazi',
-      subtitle: 'Mashina raqami orqali egasiga xabar yuborishning eng oddiy va xavfsiz yo‘li.',
-      ctaSearch: 'Mashina qidirish',
-      ctaClaim: 'Raqam ulash'
+      badge: "Mashinaga anonim xabar",
+      title: "Mashinaga yoz — nomeringiz ko'rinmaydi",
+      subtitle: "Mashinasi yo'lni to'sdimi? Chiroqlari yoniq qoldimi? Nomerini kiriting, xabar yozing — egasi oladi. Siz ko'rinmaysiz.",
+      ctaSearch: 'Mashina izlash',
+      ctaClaim: "Mashinamni qo'shish",
+      steps: ['Nomerini kiriting', 'Xabar yozing', 'Egasi oladi']
     },
     features: {
-      towing: { title: 'Evakuatsiyaga yo‘l bermang', desc: 'Mashinangizni olib ketishayotgan bo‘lsa, darhol xabar olasiz.' },
-      privacy: { title: 'Shaxsiy muloqot', desc: 'Telefon raqamingizni bermasdan mashina egasi bilan gaplashing.' },
-      global: { title: 'Hamma davlatlar uchun', desc: 'Istalgan davlat raqamini ro‘yxatdan o‘tkazing va xabar oling.' }
+      towing: { title: "Evakuatordan oldin bilib olasiz", desc: "Kimdir evakuatorni ko'rsa, sizga yozadi. Ulgurib qolasiz." },
+      privacy: { title: "Nomeringiz ko'rinmaydi", desc: "Egasi xabarni oladi — nomeringizni emas." },
+      global: { title: "Har qaysi nomer ishlaydi", desc: "O'zbek, rus, qozoq nomer — farqi yo'q." }
     },
     auth: {
       title: 'Kirish',
-      subtitle: 'Davom etish uchun tizimga kiring.',
-      email: 'Email manzili',
-      phone: 'Telefon raqami',
-      password: 'Kirish kaliti',
-      otp: 'Tasdiqlash kodi (OTP)',
+      subtitle: 'Davom etish uchun kiring.',
+      email: 'Email',
+      phone: 'Telefon nomeri',
+      password: 'Parol',
+      otp: 'SMS kod',
       loginBtn: 'KIRISH',
-      invalid: 'Ma’lumotlar xato entered',
-      newUser: 'Hali ro‘yxatdan o‘tmaganmisiz?',
-      createAccount: 'Ro‘yxatdan o‘tish',
-      systemAccess: 'Tizimga kirish',
+      invalid: 'Login yoki parol xato',
+      newUser: "Akkauntingiz yo'qmi?",
+      createAccount: "Registratsiya",
+      systemAccess: 'Kirish',
       secureEntry: 'Xavfsiz kirish',
-      passAuthDesc: 'Global hisob ma’lumotlari orqali kirish.',
-      otpAuthDesc: 'SMS kod orqali shaxsingizni tasdiqlang.',
-      phoneLabel: 'Biriktirilgan telefon raqami',
-      passLabel: "Kirish protokoli (Parol)",
+      passAuthDesc: 'Email va parol bilan kiring.',
+      otpAuthDesc: 'SMS kod bilan tasdiqlang.',
+      phoneLabel: 'Telefon nomeringiz',
+      passLabel: 'Parol',
       requestCode: 'Kod olish',
-      resendCode: 'Kodni qayta yuborish',
-      initializeSession: 'SESSIYANI BOSHLASH',
-      establishLink: 'ALOQA O‘RNATISH',
+      resendCode: "Qayta yuborish",
+      initializeSession: 'KIRISH',
+      establishLink: 'TASDIQLASH',
       loginModePass: 'Parol',
-      loginModeOtp: 'SMS Kod'
+      loginModeOtp: 'SMS Kod',
+      signupTitle: 'Akkount ochish',
+      signupSub: 'Tez, bepul, anonimsiz.'
     },
     registration: {
-      title: 'Mashinani qo‘shish',
-      subtitle: 'Mashina raqamingizni profilingizga ulang.',
-      plateNumber: 'Davlat raqami',
+      title: "Mashina qo'shish",
+      subtitle: "Mashina nomeringizni akkauntga qo'shing.",
+      plateNumber: 'Mashina nomeri',
       brand: 'Markasi',
       model: 'Modeli',
-      photos: 'Mashina rasmlari',
-      tos: 'Bu mashina menga tegishli ekanligini tasdiqlayman.',
+      photos: 'Rasmlar',
+      tos: "Bu mashina meniki, qoidalarga roziman.",
       submit: 'Saqlash',
-      success: 'Mashina muvaffaqiyatli qo‘shildi!',
-      photoSuccess: 'Rasm qo‘shildi',
-      fullName: 'To‘liq ism-sharif',
-      commEmail: 'Email manzili',
-      phone: 'Mobil telefon',
-      securityKey: 'Xavfsizlik kaliti',
-      enlistNow: 'RO‘YXATDAN O‘TISH',
-      alreadyEnlisted: 'Profilingiz bormi?',
-      verifyIdentity: 'Tasdiqlash'
+      success: "Mashina qo'shildi!",
+      photoSuccess: "Rasm saqlandi",
+      fullName: 'Ismingiz',
+      commEmail: 'Email',
+      phone: 'Telefon nomeri',
+      securityKey: 'Parol',
+      enlistNow: "REGISTRATSIYA",
+      alreadyEnlisted: "Akkauntingiz bormi?",
+      verifyIdentity: 'Kirish'
     },
     search: {
-      title: 'Aqlli qidiruv',
-      subtitle: 'Mashina raqamini kiriting, biz egasini topamiz.',
+      title: 'Mashina izlash',
+      subtitle: 'Mashina nomerini kiriting — egasini topamiz.',
       placeholder: 'Masalan: 01 A 777 AA',
-      button: 'Egasini topish',
-      hint: 'Qidiruv rejimi: Universal',
-      badgeAnon: 'Anonim muloqot',
-      badgeGlobal: 'Dunyo bo‘ylab'
+      button: 'Izlash',
+      hint: "Hamma nomerlar izlanadi",
+      badgeAnon: "Nomingiz ko'rinmaydi",
+      badgeGlobal: "Dunyo bo'ylab"
     },
     plate: {
       tagUnknown: 'Egasiz',
-      tagVerified: 'Tasdiqlangan haydovchi',
-      contactBtn: 'Egasiga xabar yuborish',
+      tagVerified: 'Tasdiqlangan',
+      contactBtn: 'Xabar yozish',
       messagePlaceholder: 'Xabar yozing...',
       sendBtn: 'Yuborish'
     },
@@ -339,50 +350,51 @@ export const translations = {
       myFleet: 'Mashinalarim',
       signals: 'Xabarlar',
       security: 'Xavfsizlik',
-      enlist: 'Mashina qo‘shish',
-      fleetCommand: 'Boshqaruv paneli',
-      manageIdentities: 'Ro‘yxatdan o‘tgan mashinalaringizni boshqaring.',
+      enlist: "Mashina qo'shish",
+      fleetCommand: 'Boshqaruv',
+      manageIdentities: "Mashinalaringizni shu yerdan boshqaring.",
       logs: 'Tarix',
       configure: 'Sozlash',
-      emptyFleet: 'Mashinalar yo‘q',
-      emptyFleetDesc: 'Xabarlarni qabul qilish uchun mashinangizni ro‘yxatdan o‘tkazing.',
-      registerFirst: 'Birinchi raqamni qo‘shish',
-      signalLogs: 'Xabarlar tarixi',
-      signalLogsDesc: 'Sizga kelgan maxfiy xabarlar.',
-      quickResponse: 'Javob berish',
+      emptyFleet: "Mashina yo'q",
+      emptyFleetDesc: "Xabar olish uchun mashina nomerini qo'shing.",
+      registerFirst: "Mashina qo'shish",
+      signalLogs: 'Xabarlar',
+      signalLogsDesc: 'Mashinalaringizga kelgan xabarlar.',
+      quickResponse: 'Javob',
       archive: 'Arxiv',
-      noSignals: 'Hozircha xabarlar yo‘q.'
+      noSignals: "Hali xabar yo'q."
     },
     plateDetail: {
-      return: 'Kabinetga qaytish',
-      unclaimed: 'EGASIZ RAQAM',
+      return: 'Orqaga',
+      unclaimed: 'EGASIZ',
       verified: 'TASDIQLANGAN',
       color: 'RANGI',
       network: 'TARMOQ',
-      visualVer: 'MASHINA RASMLARI',
-      privacyOwner: "Xabarlar to‘g‘ridan-to‘g‘ri mashina egasiga yuboriladi.",
-      privacyGuest: "Bu raqam hali ro‘yxatdan o‘tmagan. Xabar saqlab qo‘yiladi.",
+      visualVer: 'RASMLAR',
+      privacyOwner: "Xabar to'g'ridan-to'g'ri egasiga boradi.",
+      privacyGuest: "Bu nomer qo'shilmagan. Xabaringiz saqlanadi.",
       dispatch: 'Xabar yozish',
-      compose: 'Xabar matnini kiriting...',
+      compose: 'Xabar yozing...',
       send: 'YUBORISH',
-      sent: 'XABAR YUBORILDI',
+      sent: 'YUBORILDI',
       newSignal: 'Yangi xabar',
-      returnRadar: 'Qidiruvga qaytish',
+      returnRadar: "Izlashga qaytish",
       quickMsgs: [
-        "Chiroqlaringiz yoniq qolibdi!",
-        "Mashinangiz yo‘lni to‘sib qo‘ydi.",
-        "Oynangiz ochiq qolibdi.",
-        "Mashinani surib qo‘ya olasizmi?",
-        "Kalitingiz esdan chiqmadimi?",
+        "Chiroqlaringiz yoniq qolgan!",
+        "Mashinangiz yo'lni to'syapti.",
+        "Oynangiz ochiq qolgan.",
+        "Mashinani bir surib qo'ya olasizmi?",
+        "Kalitingizni unutib ketmadingizmi?",
       ]
     },
     footer: {
-      tagline: 'Oddiy, tez va O‘zbekistonning istalgan nuqtasiga yetkazib berish bilan',
-      navigation: 'Navigatsiya',
+      tagline: "Tez, qulay va xavfsiz",
+      copy: "Xabar yoz. Nomeringiz ko'rinmaydi.",
+      navigation: 'Sahifalar',
       support: 'Yordam',
-      contacts: 'Kontaktlar',
-      agreement: 'Foydalanuvchi shartnomasi',
-      privacy: 'Maxfiylik siyosati',
+      contacts: "Bog'lanish",
+      agreement: 'Foydalanish shartlari',
+      privacy: 'Maxfiylik',
       rights: 'Barcha huquqlar himoyalangan.'
     }
   }

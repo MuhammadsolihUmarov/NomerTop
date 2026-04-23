@@ -114,7 +114,7 @@ export default function RegisterPlate() {
             {status !== 'loading' && (
               <div className={`auth-pill ${isLoggedIn ? 'authed' : 'guest'}`}>
                 {isLoggedIn ? (
-                  <>✓ Signed in as {session.user.email}</>
+                  <>✓ Signed in as {session.user.email ?? session.user.name ?? 'your account'}</>
                 ) : (
                   <>⚠ Not signed in — you'll be prompted on Save</>
                 )}
