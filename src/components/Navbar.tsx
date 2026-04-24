@@ -8,123 +8,143 @@ import { User, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const { locale, setLocale, t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  // Pill switcher: only RU and UZ
-  const mainLanguages = [
+  const langs = [
     { code: 'ru', label: 'RU', flag: '🇷🇺' },
     { code: 'uz', label: 'UZ', flag: '🇺🇿' },
-  ];
-
-  // Mobile menu: all three
-  const allLanguages = [
-    { code: 'ru', label: 'Русский', flag: '🇷🇺' },
-    { code: 'uz', label: "O'zbekcha", flag: '🇺🇿' },
   ];
 
   return (
     <nav className="sticky-nav">
       <div className="container nav-content">
-        <Link href="/" className="logo-text no-underline">
-          <span className="logo-main">NOMER</span><span className="logo-accent">TOP</span>
+
+        <Link href="/" className="logo no-underline">
+          <span className="logo-n">NOMER</span><span className="logo-t">TOP</span>
         </Link>
 
-        <style jsx>{`
-          .logo-text { font-family: 'Outfit', sans-serif; font-weight: 950; font-size: 1.5rem; letter-spacing: -0.05em; display: flex; align-items: center; }
-          .logo-main { color: white; }
-          .logo-accent { background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px var(--primary-glow)); }
-          .lang-pill-switcher { display: flex; background: rgba(0,0,0,0.4); padding: 0.2rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.06); gap: 0.15rem; }
-          .lang-pill { display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.75rem; border-radius: 0.6rem; font-size: 0.7rem; font-weight: 950; color: rgba(255,255,255,0.25); transition: all 0.2s; letter-spacing: 0.05em; }
-          .lang-pill:hover { color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.03); }
-          .lang-pill-active { background: rgba(255,255,255,0.06); color: white !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
-          .mobile-toggle { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); }
-          @media (min-width: 769px) { .mobile-toggle { display: none; } }
-          
-          .mobile-container {
-            position: absolute; top: 100%; left: 0; right: 0; 
-            padding: 2rem 1.5rem; background: rgba(5,5,8,0.95);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            backdrop-filter: blur(20px);
-          }
-          .mobile-links { display: flex; flex-direction: column; gap: 1.5rem; }
-          .mobile-links a { font-size: 1.1rem; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 0.1em; }
-          
-          .mobile-lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-          .mobile-lang-grid button { 
-             padding: 0.8rem; background: rgba(255,255,255,0.03); 
-             border: 1px solid rgba(255,255,255,0.06); border-radius: 10px;
-             display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-             color: rgba(255,255,255,0.3); font-size: 0.8rem; font-weight: 900;
-          }
-          .mobile-lang-grid button.active { 
-             background: rgba(255,255,255,0.06); color: white; border-color: rgba(255,255,255,0.1);
-          }
-        `}</style>
-
-        {/* Desktop Nav */}
+        {/* Desktop */}
         <div className="desktop-links">
-          <Link href="/search" className="no-underline">{t.nav.search}</Link>
-          <Link href="/dashboard" className="no-underline">{t.nav.dashboard}</Link>
+          <Link href="/search">{t.nav.search}</Link>
+          <Link href="/dashboard">{t.nav.dashboard}</Link>
 
-          {/* Language Switcher - RU / UZ pill */}
-          <div className="lang-pill-switcher">
-            {mainLanguages.map(lang => (
+          <div className="lang-switch">
+            {langs.map(l => (
               <button
-                key={lang.code}
-                onClick={() => setLocale(lang.code as any)}
-                className={`lang-pill ${locale === lang.code ? 'lang-pill-active' : ''}`}
+                key={l.code}
+                onClick={() => setLocale(l.code as any)}
+                className={locale === l.code ? 'active' : ''}
               >
-                <span>{lang.flag}</span>
-                <span>{lang.label}</span>
+                {l.flag} {l.label}
               </button>
             ))}
           </div>
 
-          <Link href="/login" className="btn-login no-underline">
-            <User size={18} />
+          <Link href="/login" className="btn-login">
+            <User size={16} />
             <span>{t.nav.login}</span>
           </Link>
         </div>
 
-        {/* Mobile Toggle */}
-        <button className="mobile-toggle text-white" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X /> : <Menu />}
+        {/* Mobile toggle */}
+        <button className="mob-toggle" onClick={() => setOpen(!open)}>
+          {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
-        {isOpen && (
+        {open && (
           <motion.div
+            className="mob-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mobile-container glass"
           >
-            <div className="mobile-links">
-              <Link href="/search" onClick={() => setIsOpen(false)}>{t.nav.search}</Link>
-              <Link href="/dashboard" onClick={() => setIsOpen(false)}>{t.nav.dashboard}</Link>
-
-              <div className="mobile-lang-grid">
-                {allLanguages.map(lang => (
-                  <button
-                    key={lang.code}
-                    onClick={() => { setLocale(lang.code as any); setIsOpen(false); }}
-                    className={locale === lang.code ? 'active' : ''}
-                  >
-                    <span className="mobile-flag">{lang.flag}</span>
-                    <span className="mobile-lang-label">{lang.label}</span>
-                  </button>
-                ))}
-              </div>
-
-              <Link href="/login" className="btn-primary-large" onClick={() => setIsOpen(false)}>
-                {t.nav.login}
-              </Link>
+            <Link href="/search" onClick={() => setOpen(false)}>{t.nav.search}</Link>
+            <Link href="/dashboard" onClick={() => setOpen(false)}>{t.nav.dashboard}</Link>
+            <div className="mobile-lang-grid">
+              {[
+                { code: 'ru', label: 'Русский', flag: '🇷🇺' },
+                { code: 'uz', label: "O'zbekcha", flag: '🇺🇿' },
+              ].map(l => (
+                <button
+                  key={l.code}
+                  onClick={() => { setLocale(l.code as any); setOpen(false); }}
+                  className={locale === l.code ? 'active' : ''}
+                >
+                  {l.flag} {l.label}
+                </button>
+              ))}
             </div>
+            <Link href="/login" className="btn-primary-large" onClick={() => setOpen(false)} style={{ justifyContent: 'center' }}>
+              {t.nav.login}
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style jsx>{`
+        .logo {
+          font-family: 'Outfit', sans-serif;
+          font-weight: 900;
+          font-size: 1.4rem;
+          letter-spacing: -0.04em;
+          display: flex;
+          align-items: center;
+        }
+        .logo-n { color: #0f172a; }
+        .logo-t { color: #6366f1; }
+
+        .lang-switch {
+          display: flex;
+          background: #f1f5f9;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 0.18rem;
+          gap: 0.15rem;
+        }
+        .lang-switch button {
+          padding: 0.3rem 0.6rem;
+          border-radius: 6px;
+          font-size: 0.72rem;
+          font-weight: 800;
+          color: #94a3b8;
+          letter-spacing: 0.04em;
+          transition: all 0.15s;
+        }
+        .lang-switch button.active {
+          background: white;
+          color: #0f172a;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+        }
+        .lang-switch button:hover:not(.active) { color: #64748b; }
+
+        .mob-toggle {
+          display: none;
+          width: 36px; height: 36px;
+          align-items: center; justify-content: center;
+          background: #f1f5f9; border: 1px solid #e2e8f0;
+          border-radius: 8px; color: #0f172a;
+        }
+
+        .mob-menu {
+          border-bottom: 1px solid #e2e8f0;
+          padding: 1.25rem 1.5rem;
+          display: flex; flex-direction: column; gap: 1.25rem;
+          background: white;
+          overflow: hidden;
+        }
+        .mob-menu a {
+          font-size: 1rem; font-weight: 700;
+          color: #0f172a; text-transform: uppercase; letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 768px) {
+          .desktop-links { display: none; }
+          .mob-toggle { display: flex; }
+        }
+      `}</style>
     </nav>
   );
 }

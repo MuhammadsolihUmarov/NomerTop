@@ -274,7 +274,7 @@ export const translations = {
     },
     hero: {
       badge: "Mashinaga anonim xabar",
-      title: "Mashinaga yoz — nomeringiz ko'rinmaydi",
+      title: "Mashinaga yoz — raqamingni bilishmaydi",
       subtitle: "Mashinasi yo'lni to'sdimi? Chiroqlari yoniq qoldimi? Nomerini kiriting, xabar yozing — egasi oladi. Siz ko'rinmaysiz.",
       ctaSearch: 'Mashina izlash',
       ctaClaim: "Mashinamni qo'shish",

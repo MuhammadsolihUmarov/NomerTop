@@ -20,8 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="midnight-theme">
-        <div className="mesh-bg"></div>
+      <body>
         <NextAuthProvider>
           <LanguageProvider>
             <AuthModalProvider>
@@ -30,7 +29,7 @@ export default function RootLayout({
                 {children}
               </div>
               <Footer />
-              <Toaster position="bottom-right" richColors theme="dark" />
+              <Toaster position="bottom-right" richColors theme="light" />
             </AuthModalProvider>
           </LanguageProvider>
         </NextAuthProvider>

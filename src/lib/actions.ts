@@ -4,8 +4,14 @@ import { normalizePlate, formatPlateDisplay } from "./utils";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+import db from "./db";
 
 const API_SERVER_URL = process.env.INTERNAL_API_URL || 'http://localhost:8000';
+
+function isNetworkError(e: any): boolean {
+  const msg = (e?.message || '').toLowerCase();
+  return msg.includes('fetch failed') || msg.includes('econnrefused') || msg.includes('connect');
+}
 
 async function serverFetch(endpoint: string, options: RequestInit = {}) {
   const response = await fetch(`${API_SERVER_URL}${endpoint}`, {
@@ -55,7 +61,29 @@ export async function sendOtp(phone: string) {
     });
     return { success: true, debug_code: response.debug_code };
   } catch (e: any) {
-    return { error: e.message || "Failed to send OTP." };
+    if (!isNetworkError(e)) {
+      return { error: e.message || 'Xato yuz berdi.' };
+    }
+
+    // Backend unreachable — local OTP via Prisma
+    try {
+      const code = String(Math.floor(100000 + Math.random() * 900000));
+      const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+
+      await db.verificationToken.deleteMany({ where: { identifier: phone } });
+      await db.verificationToken.create({ data: { identifier: phone, token: code, expires } });
+
+      await db.user.upsert({
+        where: { phone },
+        update: {},
+        create: { phone, name: phone },
+      });
+
+      console.log(`[OTP] ${phone} → ${code}`);
+      return { success: true, debug_code: code };
+    } catch (dbErr: any) {
+      return { error: 'Server bilan aloqa yo\'q. Keyinroq urinib ko\'ring.' };
+    }
   }
 }
 

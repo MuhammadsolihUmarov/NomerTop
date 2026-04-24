@@ -5,16 +5,16 @@ import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, ArrowRight, Smartphone, ShieldCheck } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/components/LanguageProvider';
 import { sendOtp } from '@/lib/actions';
 import { toast } from 'sonner';
 
 export default function LoginPage() {
   const { t } = useTranslation();
-  const [mode, setMode] = useState<'password' | 'otp'>('password');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [useOtp, setUseOtp] = useState(false);
   const [otp, setOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -29,301 +29,234 @@ export default function LoginPage() {
   }, [timer]);
 
   const handleSendOtp = async () => {
-    if (!phone) { setError(t.auth.phoneLabel); return; }
-    setLoading(true);
-    setError('');
+    if (!phone) { setError("Telefon nomerni kiriting"); return; }
+    setLoading(true); setError('');
     const res = await sendOtp(phone);
-    setLoading(false);
-    if (res.success) {
-      setOtpSent(true);
-      setTimer(60);
-      toast.success('SMS yuborildi!');
-      if (res.debug_code) setOtp(res.debug_code);
-    } else {
+
+    if (!res.success) {
+      setLoading(false);
       setError(res.error || 'Xato yuz berdi');
+      return;
+    }
+
+    setOtpSent(true); setTimer(60);
+
+    if (res.debug_code) {
+      // Backend offline — local OTP generated. Auto-login immediately.
+      const code = res.debug_code;
+      setOtp(code);
+      toast.info('Kirish kodi tayyor. Kiring...');
+
+      const loginRes = await signIn('credentials', {
+        identifier: phone,
+        otp: code,
+        redirect: false,
+      });
+      setLoading(false);
+
+      if (loginRes?.error) {
+        setError(t.auth.invalid);
+      } else {
+        router.push('/dashboard');
+        router.refresh();
+      }
+    } else {
+      setLoading(false);
+      toast.success('SMS yuborildi!');
     }
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
-    const params = mode === 'password'
-      ? { identifier: phone, password }
-      : { identifier: phone, otp };
+    setLoading(true); setError('');
+    const params = useOtp ? { identifier: phone, otp } : { identifier: phone, password };
     const res = await signIn('credentials', { ...params, redirect: false });
     if (res?.error) {
       setError(t.auth.invalid);
       setLoading(false);
     } else {
-      toast.success('Xush kelibsiz!');
       router.push('/dashboard');
       router.refresh();
     }
   };
 
+  const switchMode = () => {
+    setUseOtp(v => !v);
+    setError('');
+    setOtp('');
+    setOtpSent(false);
+  };
+
   return (
-    <div className="lp">
+    <div className="pg">
       <motion.div
-        className="lp-wrap"
+        className="card"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.38 }}
       >
-        {/* Header */}
-        <div className="lp-head">
-          <div className="lp-ic">
-            {mode === 'password' ? <Lock size={20} /> : <ShieldCheck size={20} />}
-          </div>
+        <div className="hd">
+          <div className="hd-icon">🔐</div>
           <h1>{t.auth.title}</h1>
-          <p>{mode === 'password' ? t.auth.passAuthDesc : t.auth.otpAuthDesc}</p>
+          <p>{useOtp ? t.auth.otpAuthDesc : t.auth.passAuthDesc}</p>
         </div>
 
-        {/* Mode switch */}
-        <div className="lp-tabs">
-          <button
-            className={mode === 'password' ? 'active' : ''}
-            onClick={() => { setMode('password'); setError(''); }}
-          >
-            {t.auth.loginModePass}
-          </button>
-          <button
-            className={mode === 'otp' ? 'active' : ''}
-            onClick={() => { setMode('otp'); setError(''); }}
-          >
-            {t.auth.loginModeOtp}
-          </button>
-        </div>
-
-        {/* Form */}
-        <form onSubmit={handleLogin} className="lp-form">
-
+        <form onSubmit={handleSubmit} className="fm">
           {/* Phone */}
-          <div className="lp-field">
+          <div className="field">
             <label>{t.auth.phoneLabel}</label>
-            <div className="lp-row">
-              <Smartphone size={15} className="lp-fic" />
-              <input
-                type="tel"
-                placeholder="+998 90 123 45 67"
-                value={phone}
-                onChange={e => setPhone(e.target.value)}
-                required
-              />
-            </div>
+            <input
+              type="tel"
+              placeholder="+998 90 123 45 67"
+              value={phone}
+              onChange={e => setPhone(e.target.value)}
+              required
+            />
           </div>
 
           {/* Password or OTP */}
           <AnimatePresence mode="wait">
-            {mode === 'password' ? (
-              <motion.div
-                key="pw"
-                className="lp-field"
-                initial={{ opacity: 0, x: -6 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 6 }}
-                transition={{ duration: 0.18 }}
+            {!useOtp ? (
+              <motion.div key="pw" className="field"
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
               >
                 <label>{t.auth.passLabel}</label>
-                <div className="lp-row">
-                  <Lock size={15} className="lp-fic" />
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                />
               </motion.div>
             ) : (
-              <motion.div
-                key="otp"
-                className="lp-field"
-                initial={{ opacity: 0, x: 6 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -6 }}
-                transition={{ duration: 0.18 }}
+              <motion.div key="otp" className="field"
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
               >
-                <div className="lp-label-row">
+                <div className="label-row">
                   <label>{t.auth.otp}</label>
-                  <button
-                    type="button"
-                    className="lp-send-btn"
-                    disabled={loading || timer > 0}
-                    onClick={handleSendOtp}
-                  >
+                  <button type="button" className="send-btn" disabled={loading || timer > 0} onClick={handleSendOtp}>
                     {timer > 0 ? `${timer}s` : otpSent ? t.auth.resendCode : t.auth.requestCode}
                   </button>
                 </div>
-                <div className="lp-row">
-                  <ShieldCheck size={15} className="lp-fic" />
-                  <input
-                    type="text"
-                    placeholder="000000"
-                    value={otp}
-                    maxLength={6}
-                    onChange={e => setOtp(e.target.value)}
-                    disabled={!otpSent}
-                  />
-                </div>
+                <input
+                  type="text"
+                  placeholder="000000"
+                  value={otp}
+                  maxLength={6}
+                  onChange={e => setOtp(e.target.value)}
+                  disabled={!otpSent}
+                  style={{ letterSpacing: '0.25em', fontSize: '1.2rem', textAlign: 'center' }}
+                />
               </motion.div>
             )}
           </AnimatePresence>
 
-          {error && <p className="lp-err">{error}</p>}
+          {error && <p className="err">{error}</p>}
 
-          <button
-            type="submit"
-            className="lp-submit"
-            disabled={loading || (mode === 'otp' && !otpSent)}
-          >
-            {loading
-              ? <span className="spin" />
-              : <><span>{t.auth.loginBtn}</span><ArrowRight size={15} /></>
-            }
+          <button type="submit" className="submit" disabled={loading || (useOtp && !otpSent)}>
+            {loading ? <span className="spinner" /> : <><span>{t.auth.loginBtn}</span><ArrowRight size={15} /></>}
           </button>
         </form>
 
-        <p className="lp-foot">
+        <button className="mode-switch" onClick={switchMode}>
+          {useOtp ? `← ${t.auth.loginModePass} bilan kirish` : t.auth.loginModeOtp + ' bilan kirish →'}
+        </button>
+
+        <p className="foot">
           {t.auth.newUser}{' '}
-          <Link href="/register" className="lp-link">{t.auth.createAccount}</Link>
+          <Link href="/register" className="foot-link">{t.auth.createAccount}</Link>
         </p>
       </motion.div>
 
       <style jsx>{`
-        .lp {
+        .pg {
           min-height: 88vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem 1.5rem;
-        }
-        .lp-wrap { width: 100%; max-width: 380px; }
-
-        /* Head */
-        .lp-head { text-align: center; margin-bottom: 2rem; }
-        .lp-ic {
-          width: 46px; height: 46px;
-          background: rgba(99,102,241,0.1);
-          border: 1px solid rgba(99,102,241,0.18);
-          border-radius: 13px;
           display: flex; align-items: center; justify-content: center;
-          color: #818cf8;
-          margin: 0 auto 1.1rem;
+          padding: 2rem 1.5rem;
+          background: #f8fafc;
         }
-        .lp-head h1 { font-size: 1.8rem; font-weight: 900; color: #fff; margin-bottom: 0.3rem; }
-        .lp-head p { font-size: 0.83rem; color: rgba(255,255,255,0.35); }
-
-        /* Tabs */
-        .lp-tabs {
-          display: flex;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.06);
-          border-radius: 0.8rem;
-          padding: 0.2rem;
-          gap: 0.2rem;
-          margin-bottom: 1.6rem;
-        }
-        .lp-tabs button {
-          flex: 1; padding: 0.6rem;
-          border-radius: 0.62rem;
-          font-size: 0.75rem; font-weight: 800;
-          text-transform: uppercase; letter-spacing: 0.08em;
-          color: rgba(255,255,255,0.25);
-          transition: all 0.18s;
-        }
-        .lp-tabs button.active {
-          background: rgba(99,102,241,0.14);
-          color: #a5b4fc;
-          box-shadow: inset 0 0 0 1px rgba(99,102,241,0.22);
+        .card {
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 20px;
+          padding: 2.5rem 2rem;
+          width: 100%; max-width: 380px;
+          box-shadow: 0 4px 24px rgba(0,0,0,0.07);
         }
 
-        /* Fields */
-        .lp-form { display: flex; flex-direction: column; gap: 1rem; }
-        .lp-field label {
-          display: block;
-          font-size: 0.65rem; font-weight: 800;
-          text-transform: uppercase; letter-spacing: 0.1em;
-          color: rgba(255,255,255,0.25);
-          margin-bottom: 0.45rem;
-        }
-        .lp-label-row {
-          display: flex; justify-content: space-between; align-items: center;
-          margin-bottom: 0.45rem;
-        }
-        .lp-label-row label { margin-bottom: 0; }
-        .lp-send-btn {
-          font-size: 0.65rem; font-weight: 800;
-          color: #818cf8; text-transform: uppercase; letter-spacing: 0.06em;
-        }
-        .lp-send-btn:disabled { color: rgba(255,255,255,0.18); }
+        .hd { text-align: center; margin-bottom: 2rem; }
+        .hd-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .hd h1 { font-size: 1.75rem; font-weight: 900; color: #0f172a; margin-bottom: 0.3rem; }
+        .hd p { font-size: 0.84rem; color: #94a3b8; }
 
-        .lp-row {
-          position: relative; display: flex; align-items: center;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.07);
-          border-radius: 0.8rem;
-          transition: border-color 0.18s, box-shadow 0.18s;
+        .fm { display: flex; flex-direction: column; gap: 1rem; }
+
+        .field { display: flex; flex-direction: column; gap: 0.4rem; }
+        .field label {
+          font-size: 0.72rem; font-weight: 700;
+          text-transform: uppercase; letter-spacing: 0.08em; color: #64748b;
         }
-        .lp-row:focus-within {
-          border-color: rgba(99,102,241,0.38);
-          box-shadow: 0 0 0 3px rgba(99,102,241,0.08);
+        .field input {
+          width: 100%; padding: 0.78rem 1rem;
+          font-size: 0.95rem; font-weight: 500;
+          background: #f8fafc; border: 1.5px solid #e2e8f0;
+          border-radius: 10px; color: #0f172a;
+          transition: border-color 0.15s, box-shadow 0.15s;
         }
-        .lp-fic {
-          position: absolute; left: 0.9rem;
-          color: rgba(255,255,255,0.18); pointer-events: none;
+        .field input:focus {
+          border-color: #6366f1;
+          box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+          background: white; outline: none;
         }
-        .lp-row input {
-          width: 100%;
-          background: transparent !important; border: none !important;
-          border-radius: 0.8rem !important;
-          padding: 0.85rem 0.9rem 0.85rem 2.6rem !important;
-          font-size: 0.93rem !important; color: #fff !important;
-          font-weight: 600; box-shadow: none !important;
+        .field input:-webkit-autofill,
+        .field input:-webkit-autofill:focus {
+          -webkit-box-shadow: 0 0 0 60px #f8fafc inset !important;
+          -webkit-text-fill-color: #0f172a !important;
         }
-        .lp-row input:-webkit-autofill,
-        .lp-row input:-webkit-autofill:hover,
-        .lp-row input:-webkit-autofill:focus {
-          -webkit-box-shadow: 0 0 0 60px #0d0d14 inset !important;
-          -webkit-text-fill-color: #fff !important;
-          caret-color: #fff;
+        .field input:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        .label-row { display: flex; justify-content: space-between; align-items: center; }
+        .label-row label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; }
+        .send-btn { font-size: 0.75rem; font-weight: 700; color: #6366f1; transition: color 0.15s; }
+        .send-btn:hover { color: #4f46e5; }
+        .send-btn:disabled { color: #94a3b8; cursor: not-allowed; }
+
+        .err {
+          font-size: 0.8rem; color: #ef4444; font-weight: 600;
+          background: #fef2f2; border: 1px solid #fecaca;
+          padding: 0.6rem 0.9rem; border-radius: 8px; text-align: center;
         }
 
-        .lp-err {
-          font-size: 0.78rem; color: #f87171; font-weight: 700;
-          background: rgba(248,113,113,0.07);
-          border: 1px solid rgba(248,113,113,0.14);
-          padding: 0.55rem 0.9rem; border-radius: 0.65rem; text-align: center;
+        .submit {
+          display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+          width: 100%; padding: 0.88rem;
+          background: #6366f1; color: white; border: none;
+          border-radius: 10px; font-size: 0.88rem; font-weight: 700;
+          letter-spacing: 0.04em; cursor: pointer; margin-top: 0.25rem;
+          transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+          box-shadow: 0 4px 14px rgba(99,102,241,0.3);
         }
+        .submit:hover:not(:disabled) { background: #4f46e5; transform: translateY(-1px); }
+        .submit:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
-        .lp-submit {
-          display: flex; align-items: center; justify-content: center; gap: 0.45rem;
-          width: 100%; padding: 0.92rem;
-          background: linear-gradient(135deg, #6366f1, #a855f7);
-          color: #fff; border: none; border-radius: 0.8rem;
-          font-size: 0.85rem; font-weight: 800; letter-spacing: 0.06em;
-          cursor: pointer; margin-top: 0.2rem;
-          transition: filter 0.18s, transform 0.18s;
-          box-shadow: 0 5px 18px rgba(99,102,241,0.24);
+        .mode-switch {
+          display: block; width: 100%; margin-top: 1rem;
+          text-align: center; font-size: 0.8rem;
+          color: #6366f1; font-weight: 600;
+          padding: 0.5rem; border-radius: 8px;
+          transition: background 0.15s;
         }
-        .lp-submit:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
-        .lp-submit:disabled { opacity: 0.42; cursor: not-allowed; }
+        .mode-switch:hover { background: #eef2ff; }
 
-        .spin {
-          width: 17px; height: 17px;
-          border: 2px solid rgba(255,255,255,0.22);
-          border-top-color: #fff; border-radius: 50%;
-          animation: sp 0.7s linear infinite; display: inline-block;
+        .foot {
+          text-align: center; margin-top: 1.25rem;
+          font-size: 0.84rem; color: #94a3b8; font-weight: 500;
         }
-        @keyframes sp { to { transform: rotate(360deg); } }
-
-        .lp-foot {
-          text-align: center; margin-top: 1.6rem;
-          font-size: 0.82rem; color: rgba(255,255,255,0.26); font-weight: 600;
-        }
-        .lp-link { color: #818cf8; font-weight: 800; }
-        .lp-link:hover { text-decoration: underline; }
+        .foot-link { color: #6366f1; font-weight: 700; }
+        .foot-link:hover { text-decoration: underline; }
       `}</style>
     </div>
   );

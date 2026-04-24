@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Smartphone, Lock, ArrowRight, User } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { registerUser } from '@/lib/actions';
 import { useTranslation } from '@/components/LanguageProvider';
 import { toast } from 'sonner';
@@ -21,8 +21,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
+    setLoading(true); setError('');
     const data = new FormData();
     data.append('name', form.name);
     data.append('phone', form.phone);
@@ -38,179 +37,121 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="rp">
+    <div className="pg">
       <motion.div
-        className="rp-wrap"
+        className="card"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.38 }}
       >
-        {/* Header */}
-        <div className="rp-head">
-          <div className="rp-ic"><User size={20} /></div>
+        <div className="hd">
+          <div className="hd-icon">👤</div>
           <h1>{t.auth.signupTitle}</h1>
           <p>{t.auth.signupSub}</p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="rp-form">
-
-          <div className="rp-field">
+        <form onSubmit={handleSubmit} className="fm">
+          <div className="field">
             <label>{t.registration.fullName}</label>
-            <div className="rp-row">
-              <User size={15} className="rp-fic" />
-              <input
-                type="text"
-                placeholder="Muhammad"
-                value={form.name}
-                onChange={set('name')}
-                required
-              />
-            </div>
+            <input type="text" placeholder="Muhammad" value={form.name} onChange={set('name')} required />
           </div>
 
-          <div className="rp-field">
+          <div className="field">
             <label>{t.registration.phone}</label>
-            <div className="rp-row">
-              <Smartphone size={15} className="rp-fic" />
-              <input
-                type="tel"
-                placeholder="+998 90 123 45 67"
-                value={form.phone}
-                onChange={set('phone')}
-                required
-              />
-            </div>
+            <input type="tel" placeholder="+998 90 123 45 67" value={form.phone} onChange={set('phone')} required />
           </div>
 
-          <div className="rp-field">
+          <div className="field">
             <label>{t.registration.securityKey}</label>
-            <div className="rp-row">
-              <Lock size={15} className="rp-fic" />
-              <input
-                type="password"
-                placeholder="••••••••"
-                value={form.password}
-                onChange={set('password')}
-                required
-              />
-            </div>
+            <input type="password" placeholder="••••••••" value={form.password} onChange={set('password')} required />
           </div>
 
-          {error && <p className="rp-err">{error}</p>}
+          {error && <p className="err">{error}</p>}
 
-          <button type="submit" className="rp-submit" disabled={loading}>
+          <button type="submit" className="submit" disabled={loading}>
             {loading
-              ? <span className="spin" />
+              ? <span className="spinner" />
               : <><span>{t.registration.enlistNow}</span><ArrowRight size={15} /></>
             }
           </button>
         </form>
 
-        <p className="rp-foot">
+        <p className="foot">
           {t.registration.alreadyEnlisted}{' '}
-          <Link href="/login" className="rp-link">{t.registration.verifyIdentity}</Link>
+          <Link href="/login" className="foot-link">{t.registration.verifyIdentity}</Link>
         </p>
       </motion.div>
 
       <style jsx>{`
-        .rp {
+        .pg {
           min-height: 88vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem 1.5rem;
-        }
-        .rp-wrap { width: 100%; max-width: 380px; }
-
-        /* Head */
-        .rp-head { text-align: center; margin-bottom: 2rem; }
-        .rp-ic {
-          width: 46px; height: 46px;
-          background: rgba(16,185,129,0.1);
-          border: 1px solid rgba(16,185,129,0.18);
-          border-radius: 13px;
           display: flex; align-items: center; justify-content: center;
-          color: #34d399;
-          margin: 0 auto 1.1rem;
+          padding: 2rem 1.5rem;
+          background: #f8fafc;
         }
-        .rp-head h1 { font-size: 1.8rem; font-weight: 900; color: #fff; margin-bottom: 0.3rem; }
-        .rp-head p { font-size: 0.83rem; color: rgba(255,255,255,0.35); }
-
-        /* Form */
-        .rp-form { display: flex; flex-direction: column; gap: 1rem; }
-        .rp-field label {
-          display: block;
-          font-size: 0.65rem; font-weight: 800;
-          text-transform: uppercase; letter-spacing: 0.1em;
-          color: rgba(255,255,255,0.25);
-          margin-bottom: 0.45rem;
-        }
-        .rp-row {
-          position: relative; display: flex; align-items: center;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.07);
-          border-radius: 0.8rem;
-          transition: border-color 0.18s, box-shadow 0.18s;
-        }
-        .rp-row:focus-within {
-          border-color: rgba(16,185,129,0.35);
-          box-shadow: 0 0 0 3px rgba(16,185,129,0.07);
-        }
-        .rp-fic {
-          position: absolute; left: 0.9rem;
-          color: rgba(255,255,255,0.18); pointer-events: none;
-        }
-        .rp-row input {
-          width: 100%;
-          background: transparent !important; border: none !important;
-          border-radius: 0.8rem !important;
-          padding: 0.85rem 0.9rem 0.85rem 2.6rem !important;
-          font-size: 0.93rem !important; color: #fff !important;
-          font-weight: 600; box-shadow: none !important;
-        }
-        .rp-row input:-webkit-autofill,
-        .rp-row input:-webkit-autofill:hover,
-        .rp-row input:-webkit-autofill:focus {
-          -webkit-box-shadow: 0 0 0 60px #0d0d14 inset !important;
-          -webkit-text-fill-color: #fff !important;
-          caret-color: #fff;
+        .card {
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 20px;
+          padding: 2.5rem 2rem;
+          width: 100%; max-width: 380px;
+          box-shadow: 0 4px 24px rgba(0,0,0,0.07);
         }
 
-        .rp-err {
-          font-size: 0.78rem; color: #f87171; font-weight: 700;
-          background: rgba(248,113,113,0.07);
-          border: 1px solid rgba(248,113,113,0.14);
-          padding: 0.55rem 0.9rem; border-radius: 0.65rem; text-align: center;
+        .hd { text-align: center; margin-bottom: 2rem; }
+        .hd-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .hd h1 { font-size: 1.75rem; font-weight: 900; color: #0f172a; margin-bottom: 0.3rem; }
+        .hd p { font-size: 0.84rem; color: #94a3b8; }
+
+        .fm { display: flex; flex-direction: column; gap: 1rem; }
+
+        .field { display: flex; flex-direction: column; gap: 0.4rem; }
+        .field label {
+          font-size: 0.72rem; font-weight: 700;
+          text-transform: uppercase; letter-spacing: 0.08em; color: #64748b;
+        }
+        .field input {
+          width: 100%; padding: 0.78rem 1rem;
+          font-size: 0.95rem; font-weight: 500;
+          background: #f8fafc; border: 1.5px solid #e2e8f0;
+          border-radius: 10px; color: #0f172a;
+          transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .field input:focus {
+          border-color: #10b981;
+          box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+          background: white; outline: none;
+        }
+        .field input:-webkit-autofill,
+        .field input:-webkit-autofill:focus {
+          -webkit-box-shadow: 0 0 0 60px #f8fafc inset !important;
+          -webkit-text-fill-color: #0f172a !important;
         }
 
-        .rp-submit {
-          display: flex; align-items: center; justify-content: center; gap: 0.45rem;
-          width: 100%; padding: 0.92rem;
-          background: linear-gradient(135deg, #10b981, #059669);
-          color: #fff; border: none; border-radius: 0.8rem;
-          font-size: 0.85rem; font-weight: 800; letter-spacing: 0.06em;
-          cursor: pointer; margin-top: 0.2rem;
-          transition: filter 0.18s, transform 0.18s;
-          box-shadow: 0 5px 18px rgba(16,185,129,0.22);
+        .err {
+          font-size: 0.8rem; color: #ef4444; font-weight: 600;
+          background: #fef2f2; border: 1px solid #fecaca;
+          padding: 0.6rem 0.9rem; border-radius: 8px; text-align: center;
         }
-        .rp-submit:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
-        .rp-submit:disabled { opacity: 0.42; cursor: not-allowed; }
 
-        .spin {
-          width: 17px; height: 17px;
-          border: 2px solid rgba(255,255,255,0.22);
-          border-top-color: #fff; border-radius: 50%;
-          animation: sp 0.7s linear infinite; display: inline-block;
+        .submit {
+          display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+          width: 100%; padding: 0.88rem;
+          background: #10b981; color: white; border: none;
+          border-radius: 10px; font-size: 0.88rem; font-weight: 700;
+          letter-spacing: 0.04em; cursor: pointer; margin-top: 0.25rem;
+          transition: background 0.15s, transform 0.15s;
+          box-shadow: 0 4px 14px rgba(16,185,129,0.3);
         }
-        @keyframes sp { to { transform: rotate(360deg); } }
+        .submit:hover:not(:disabled) { background: #059669; transform: translateY(-1px); }
+        .submit:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
-        .rp-foot {
-          text-align: center; margin-top: 1.6rem;
-          font-size: 0.82rem; color: rgba(255,255,255,0.26); font-weight: 600;
+        .foot {
+          text-align: center; margin-top: 1.5rem;
+          font-size: 0.84rem; color: #94a3b8; font-weight: 500;
         }
-        .rp-link { color: #34d399; font-weight: 800; }
-        .rp-link:hover { text-decoration: underline; }
+        .foot-link { color: #10b981; font-weight: 700; }
+        .foot-link:hover { text-decoration: underline; }
       `}</style>
     </div>
   );

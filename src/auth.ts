@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import db from "@/lib/db";
 
 const API_SERVER_URL = process.env.INTERNAL_API_URL || 'http://localhost:8000';
 
@@ -51,8 +52,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             phone: user.phone,
             role: user.role,
           };
-        } catch (e) {
-          return null;
+        } catch (e: any) {
+          // Backend unreachable — try local Prisma OTP verification
+          if (!isOtpFlow) return null;
+          try {
+            const vt = await db.verificationToken.findFirst({
+              where: {
+                identifier: credentials.identifier as string,
+                token: credentials.otp as string,
+                expires: { gt: new Date() },
+              },
+            });
+            if (!vt) return null;
+
+            await db.verificationToken.deleteMany({
+              where: { identifier: credentials.identifier as string },
+            });
+
+            const user = await db.user.findFirst({
+              where: { phone: credentials.identifier as string },
+            });
+            if (!user) return null;
+
+            return { id: user.id, name: user.name ?? undefined, email: user.email ?? undefined };
+          } catch {
+            return null;
+          }
         }
       },
     }),
