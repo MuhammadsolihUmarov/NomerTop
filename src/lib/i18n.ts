@@ -274,15 +274,15 @@ export const translations = {
     },
     hero: {
       badge: "Mashinaga anonim xabar",
-      title: "Mashinaga yoz — raqamingni bilishmaydi",
-      subtitle: "Mashinasi yo'lni to'sdimi? Chiroqlari yoniq qoldimi? Nomerini kiriting, xabar yozing — egasi oladi. Siz ko'rinmaysiz.",
+      title: "Istalgan mashinaga xabar yuboring",
+      subtitle: "",
       ctaSearch: 'Mashina izlash',
       ctaClaim: "Mashinamni qo'shish",
-      steps: ['Nomerini kiriting', 'Xabar yozing', 'Egasi oladi']
+      steps: ['Nomerini kiriting', 'Xabar yozing', 'Egasi o\'qiydi']
     },
     features: {
-      towing: { title: "Evakuatordan oldin bilib olasiz", desc: "Kimdir evakuatorni ko'rsa, sizga yozadi. Ulgurib qolasiz." },
-      privacy: { title: "Nomeringiz ko'rinmaydi", desc: "Egasi xabarni oladi — nomeringizni emas." },
+      towing: { title: "Birov ko'rsa — xabar beradi", desc: "Atrofdagi odam evakuatorni ko'rsa, sizga yozadi." },
+      privacy: { title: "Raqaming ko'rinmaydi", desc: "Egasi xabarni o'qiydi, raqamingni emas." },
       global: { title: "Har qaysi nomer ishlaydi", desc: "O'zbek, rus, qozoq nomer — farqi yo'q." }
     },
     auth: {
@@ -371,8 +371,8 @@ export const translations = {
       color: 'RANGI',
       network: 'TARMOQ',
       visualVer: 'RASMLAR',
-      privacyOwner: "Xabar to'g'ridan-to'g'ri egasiga boradi.",
-      privacyGuest: "Bu nomer qo'shilmagan. Xabaringiz saqlanadi.",
+      privacyOwner: "Xabar egasiga yetadi.",
+      privacyGuest: "Bu nomer qo'shilmagan. Xabar saqlanib turadi.",
       dispatch: 'Xabar yozish',
       compose: 'Xabar yozing...',
       send: 'YUBORISH',

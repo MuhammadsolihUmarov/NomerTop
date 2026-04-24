@@ -53,28 +53,41 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             role: user.role,
           };
         } catch (e: any) {
-          // Backend unreachable — try local Prisma OTP verification
-          if (!isOtpFlow) return null;
+          // Backend unreachable — local fallback
           try {
-            const vt = await db.verificationToken.findFirst({
-              where: {
-                identifier: credentials.identifier as string,
-                token: credentials.otp as string,
-                expires: { gt: new Date() },
-              },
-            });
-            if (!vt) return null;
+            if (isOtpFlow) {
+              const vt = await db.verificationToken.findFirst({
+                where: {
+                  identifier: credentials.identifier as string,
+                  token: credentials.otp as string,
+                  expires: { gt: new Date() },
+                },
+              });
+              if (!vt) return null;
+              await db.verificationToken.deleteMany({
+                where: { identifier: credentials.identifier as string },
+              });
+              const user = await db.user.findFirst({
+                where: { phone: credentials.identifier as string },
+              });
+              if (!user) return null;
+              return { id: user.id, name: user.name ?? undefined, email: user.email ?? undefined };
+            } else {
+              const identifier = credentials.identifier as string;
+              const password = credentials.password as string;
+              if (!identifier || !password) return null;
 
-            await db.verificationToken.deleteMany({
-              where: { identifier: credentials.identifier as string },
-            });
+              const user = await db.user.findFirst({
+                where: { OR: [{ phone: identifier }, { email: identifier }] },
+              });
+              if (!user || !user.password) return null;
 
-            const user = await db.user.findFirst({
-              where: { phone: credentials.identifier as string },
-            });
-            if (!user) return null;
+              const { createHash } = await import('crypto');
+              const hashed = createHash('sha256').update(password).digest('hex');
+              if (user.password !== hashed) return null;
 
-            return { id: user.id, name: user.name ?? undefined, email: user.email ?? undefined };
+              return { id: user.id, name: user.name ?? undefined, email: user.email ?? undefined };
+            }
           } catch {
             return null;
           }

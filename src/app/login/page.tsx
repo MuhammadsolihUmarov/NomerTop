@@ -109,7 +109,8 @@ export default function LoginPage() {
               type="tel"
               placeholder="+998 90 123 45 67"
               value={phone}
-              onChange={e => setPhone(e.target.value)}
+              onChange={e => setPhone(e.target.value.replace(/[^\d+\s]/g, ''))}
+              inputMode="numeric"
               required
             />
           </div>

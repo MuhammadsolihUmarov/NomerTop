@@ -9,10 +9,17 @@ import { registerUser } from '@/lib/actions';
 import { useTranslation } from '@/components/LanguageProvider';
 import { toast } from 'sonner';
 
+const phoneExistsMsg: Record<string, string> = {
+  uz: "Bu raqam ro'yxatdan o'tgan.",
+  ru: 'Этот номер уже зарегистрирован.',
+  en: 'This number is already registered.',
+};
+
 export default function RegisterPage() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [form, setForm] = useState({ name: '', phone: '', password: '' });
   const [error, setError] = useState('');
+  const [phoneExists, setPhoneExists] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -21,14 +28,18 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); setError('');
+    setLoading(true); setError(''); setPhoneExists(false);
     const data = new FormData();
     data.append('name', form.name);
     data.append('phone', form.phone);
     data.append('password', form.password);
     const res = await registerUser(data);
     if (res?.error) {
-      setError(res.error);
+      if (res.error === 'PHONE_EXISTS') {
+        setPhoneExists(true);
+      } else {
+        setError(res.error);
+      }
       setLoading(false);
     } else {
       toast.success('Akkount yaratildi!');
@@ -58,7 +69,7 @@ export default function RegisterPage() {
 
           <div className="field">
             <label>{t.registration.phone}</label>
-            <input type="tel" placeholder="+998 90 123 45 67" value={form.phone} onChange={set('phone')} required />
+            <input type="tel" placeholder="+998 90 123 45 67" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value.replace(/[^\d+\s]/g, '') }))} inputMode="numeric" required />
           </div>
 
           <div className="field">
@@ -66,6 +77,12 @@ export default function RegisterPage() {
             <input type="password" placeholder="••••••••" value={form.password} onChange={set('password')} required />
           </div>
 
+          {phoneExists && (
+            <div className="exists-box">
+              <p>{phoneExistsMsg[locale] ?? phoneExistsMsg.uz}</p>
+              <Link href="/login" className="login-link">{t.registration.verifyIdentity} →</Link>
+            </div>
+          )}
           {error && <p className="err">{error}</p>}
 
           <button type="submit" className="submit" disabled={loading}>
@@ -145,6 +162,15 @@ export default function RegisterPage() {
         }
         .submit:hover:not(:disabled) { background: #059669; transform: translateY(-1px); }
         .submit:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+        .exists-box {
+          background: #fffbeb; border: 1px solid #fde68a;
+          border-radius: 10px; padding: 0.75rem 1rem;
+          display: flex; flex-direction: column; gap: 0.4rem;
+        }
+        .exists-box p { font-size: 0.84rem; color: #92400e; font-weight: 600; margin: 0; }
+        .login-link { font-size: 0.84rem; color: #10b981; font-weight: 700; }
+        .login-link:hover { text-decoration: underline; }
 
         .foot {
           text-align: center; margin-top: 1.5rem;

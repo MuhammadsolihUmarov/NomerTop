@@ -38,7 +38,7 @@ export default function Home() {
           >
             <span className="badge">{t.hero.badge}</span>
             <h1>{t.hero.title}</h1>
-            <p className="sub">{t.hero.subtitle}</p>
+            {t.hero.subtitle && <p className="sub">{t.hero.subtitle}</p>}
 
             <form className="sbox" onSubmit={handleSearch}>
               <input

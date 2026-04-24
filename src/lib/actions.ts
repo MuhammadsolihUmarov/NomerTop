@@ -46,7 +46,29 @@ export async function registerUser(formData: FormData) {
     });
     return { success: true };
   } catch (e: any) {
-    return { error: e.message || "Failed to create account." };
+    if (!isNetworkError(e)) return { error: e.message || 'Xato yuz berdi.' };
+
+    // Backend offline — register locally
+    try {
+      const orConditions = [
+        ...(phone ? [{ phone }] : []),
+        ...(email ? [{ email }] : []),
+      ];
+      if (orConditions.length) {
+        const existing = await db.user.findFirst({ where: { OR: orConditions } });
+        if (existing) return { error: 'PHONE_EXISTS' };
+      }
+
+      const { createHash } = await import('crypto');
+      const hashed = createHash('sha256').update(password).digest('hex');
+
+      await db.user.create({
+        data: { name: name || phone, email: email || null, phone: phone || null, password: hashed },
+      });
+      return { success: true };
+    } catch {
+      return { error: 'Ro\'yxatdan o\'tishda xato yuz berdi.' };
+    }
   }
 }
 
