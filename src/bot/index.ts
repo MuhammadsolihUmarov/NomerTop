@@ -177,9 +177,21 @@ function getLang(ctx: BotContext): Lang {
   if (ctx.session.lang) return ctx.session.lang;
   const code = ctx.from?.language_code ?? '';
   if (code.startsWith('ru')) return 'ru';
-  if (code.startsWith('uz')) return 'uz';
-  return 'ru'; // default
+  if (code.startsWith('en')) return 'en';
+  return 'uz'; // default
 }
+
+// Validation
+function hasCyrillic(s: string) { return /[А-ЯЁа-яёЎўҚқҒғҲҳ]/u.test(s); }
+function isValidPlate(n: string) {
+  // UZ: 01A777AA | RU: A123AA77 | KZ: 123ABC01 | generic 4-10 Latin+digits
+  return /^[A-Z0-9]{4,10}$/.test(n);
+}
+const cyrillicError: Record<Lang, string> = {
+  uz: '❌ Kirill harflari qabul qilinmaydi.\nLotin harflarida kiriting: <code>01 A 777 AA</code>',
+  ru: '❌ Кириллица не принимается.\nВведите латиницей: <code>01 A 777 AA</code>',
+  en: '❌ Cyrillic not accepted.\nUse Latin: <code>01 A 777 AA</code>',
+};
 
 function t(ctx: BotContext) { return T[getLang(ctx)]; }
 
@@ -351,10 +363,11 @@ bot.on(message('text'), async (ctx) => {
   if (!step) return;
   const raw = ctx.message.text.trim();
 
-  // ── reg plate ──────────────────────────────────────────────────────────────
+  // ── reg plate — stay in loop on bad input ──────────────────────────────────
   if (step === 'reg_plate') {
+    if (hasCyrillic(raw)) return ctx.reply(cyrillicError[getLang(ctx)], { parse_mode: 'HTML' });
     const n = normalizePlate(raw);
-    if (n.length < 4) return ctx.reply(t(ctx).badFormat, { parse_mode: 'HTML' });
+    if (!isValidPlate(n)) return ctx.reply(t(ctx).badFormat, { parse_mode: 'HTML' });
     const user = await upsertUser(String(ctx.from.id), ctx.from.first_name, ctx.from.last_name);
     const existing = await db.plate.findUnique({ where: { number: n } });
     if (existing) {
@@ -373,11 +386,13 @@ bot.on(message('text'), async (ctx) => {
     return ctx.reply(t(ctx).reg3, { parse_mode: 'HTML', ...photoMenu(ctx) });
   }
 
-  // ── search ─────────────────────────────────────────────────────────────────
+  // ── search — stay in loop on bad input ─────────────────────────────────────
   if (step === 'search') {
-    ctx.session.step = undefined;
+    if (hasCyrillic(raw)) return ctx.reply(cyrillicError[getLang(ctx)], { parse_mode: 'HTML' });
     const n = normalizePlate(raw);
-    if (n.length < 4) return ctx.reply(t(ctx).badFormat, { parse_mode: 'HTML' });
+    if (!isValidPlate(n)) return ctx.reply(t(ctx).badFormat, { parse_mode: 'HTML' });
+    // Only exit loop after valid input
+    ctx.session.step = undefined;
     const plate = await db.plate.findUnique({ where: { number: n }, include: { photos: true, owner: true } });
     if (!plate) return ctx.reply(t(ctx).notFound(n), { parse_mode: 'HTML', ...mainMenu(ctx) });
     const info = [plate.brand, plate.model, plate.color].filter(Boolean).join(' · ');
@@ -395,7 +410,8 @@ bot.on(message('text'), async (ctx) => {
 // ── Save plate helper ─────────────────────────────────────────────────────────
 async function savePlate(ctx: BotContext, photoFileId: string | undefined) {
   const pending = ctx.session.pending!;
-  ctx.session = { lang: ctx.session.lang };
+  const lang = getLang(ctx);
+  ctx.session = { lang };
   const user = await upsertUser(String(ctx.from!.id), ctx.from!.first_name, (ctx.from as any)?.last_name);
   const parts = (pending.brandModel ?? '').split(' ');
   await db.plate.create({
@@ -410,9 +426,17 @@ async function savePlate(ctx: BotContext, photoFileId: string | undefined) {
       ...(photoFileId ? { photos: { create: { url: photoFileId } } } : {}),
     },
   });
+  const l = T[lang];
+  // Use explicit reply_markup to guarantee the main menu keyboard appears
   await ctx.reply(
-    t(ctx).regDone(pending.display, FLAG[pending.country] ?? '🌐', pending.brandModel),
-    { parse_mode: 'HTML', ...mainMenu(ctx) },
+    l.regDone(pending.display, FLAG[pending.country] ?? '🌐', pending.brandModel),
+    {
+      parse_mode: 'HTML',
+      reply_markup: {
+        keyboard: [[l.btnAdd, l.btnFind], [l.btnMine, l.btnLang]],
+        resize_keyboard: true,
+      },
+    },
   );
 }
 
