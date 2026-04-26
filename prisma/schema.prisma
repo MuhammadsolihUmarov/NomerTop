@@ -12,6 +12,7 @@ model User {
   name          String?
   email         String?   @unique
   phone         String?   @unique
+  telegramId    String?   @unique
   emailVerified DateTime?
   image         String?
   password      String?

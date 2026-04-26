@@ -18,25 +18,42 @@ async function fetchFromBackend(endpoint: string, email: string) {
 export default async function DashboardPage() {
   const session = await auth();
 
-  if (!session?.user?.email) {
+  if (!session?.user?.id) {
     redirect("/login");
   }
 
-  const email = session.user.email;
+  const identifier = session.user.email || session.user.phone || session.user.id;
 
-  const user = await fetchFromBackend('/users/me', email);
+  // Try to fetch from backend, fall back to session data if offline
+  let user: any = null;
+  let plates: any[] = [];
+  let notifications: any[] = [];
+
+  try {
+    user = await fetchFromBackend('/users/me', identifier);
+    if (user) {
+      plates = await fetchFromBackend('/users/me/plates', identifier) || [];
+      notifications = await fetchFromBackend('/users/me/notifications', identifier) || [];
+    }
+  } catch {
+    // backend offline — use session data
+  }
+
+  // Fall back to session data when backend is unavailable
   if (!user) {
-    redirect("/login");
+    user = {
+      id: session.user.id,
+      name: session.user.name || identifier,
+      email: session.user.email || null,
+      phone: session.user.phone || null,
+    };
   }
-
-  const plates = await fetchFromBackend('/users/me/plates', email) || [];
-  const notifications = await fetchFromBackend('/users/me/notifications', email) || [];
 
   return (
-    <DashboardView 
-      user={user} 
-      plates={plates} 
-      notifications={notifications} 
+    <DashboardView
+      user={user}
+      plates={plates}
+      notifications={notifications}
     />
   );
 }

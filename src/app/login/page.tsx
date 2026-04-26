@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/components/LanguageProvider';
 import { sendOtp } from '@/lib/actions';
 import { toast } from 'sonner';
 
 export default function LoginPage() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [useOtp, setUseOtp] = useState(false);
@@ -72,7 +72,7 @@ export default function LoginPage() {
     const params = useOtp ? { identifier: phone, otp } : { identifier: phone, password };
     const res = await signIn('credentials', { ...params, redirect: false });
     if (res?.error) {
-      setError(t.auth.invalid);
+      setError(!useOtp ? t.auth.invalid + (locale === 'ru' ? ' Попробуйте войти через SMS код.' : locale === 'en' ? ' Try SMS code instead.' : '. SMS kod bilan kirip ko\'ring.') : t.auth.invalid);
       setLoading(false);
     } else {
       router.push('/dashboard');
@@ -115,45 +115,37 @@ export default function LoginPage() {
             />
           </div>
 
-          {/* Password or OTP */}
-          <AnimatePresence mode="wait">
-            {!useOtp ? (
-              <motion.div key="pw" className="field"
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-              >
-                <label>{t.auth.passLabel}</label>
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  required
-                />
-              </motion.div>
-            ) : (
-              <motion.div key="otp" className="field"
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
-              >
-                <div className="label-row">
-                  <label>{t.auth.otp}</label>
-                  <button type="button" className="send-btn" disabled={loading || timer > 0} onClick={handleSendOtp}>
-                    {timer > 0 ? `${timer}s` : otpSent ? t.auth.resendCode : t.auth.requestCode}
-                  </button>
-                </div>
-                <input
-                  type="text"
-                  placeholder="000000"
-                  value={otp}
-                  maxLength={6}
-                  onChange={e => setOtp(e.target.value)}
-                  disabled={!otpSent}
-                  style={{ letterSpacing: '0.25em', fontSize: '1.2rem', textAlign: 'center' }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Password or OTP — plain divs so styled-jsx scoping works */}
+          {!useOtp ? (
+            <div className="field">
+              <label>{t.auth.passLabel}</label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+              />
+            </div>
+          ) : (
+            <div className="field">
+              <div className="label-row">
+                <label>{t.auth.otp}</label>
+                <button type="button" className="send-btn" disabled={loading || timer > 0} onClick={handleSendOtp}>
+                  {timer > 0 ? `${timer}s` : otpSent ? t.auth.resendCode : t.auth.requestCode}
+                </button>
+              </div>
+              <input
+                type="text"
+                placeholder="000000"
+                value={otp}
+                maxLength={6}
+                onChange={e => setOtp(e.target.value)}
+                disabled={!otpSent}
+                className="otp-input"
+              />
+            </div>
+          )}
 
           {error && <p className="err">{error}</p>}
 
@@ -163,7 +155,7 @@ export default function LoginPage() {
         </form>
 
         <button className="mode-switch" onClick={switchMode}>
-          {useOtp ? `← ${t.auth.loginModePass} bilan kirish` : t.auth.loginModeOtp + ' bilan kirish →'}
+          {t.auth[useOtp ? 'switchToPass' : 'switchToOtp']}
         </button>
 
         <p className="foot">
@@ -218,6 +210,7 @@ export default function LoginPage() {
           -webkit-text-fill-color: #0f172a !important;
         }
         .field input:disabled { opacity: 0.45; cursor: not-allowed; }
+        .otp-input { letter-spacing: 0.25em !important; font-size: 1.2rem !important; text-align: center !important; }
 
         .label-row { display: flex; justify-content: space-between; align-items: center; }
         .label-row label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; }

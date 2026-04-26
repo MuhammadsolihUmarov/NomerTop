@@ -80,7 +80,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               const user = await db.user.findFirst({
                 where: { OR: [{ phone: identifier }, { email: identifier }] },
               });
-              if (!user || !user.password) return null;
+              if (!user) return null;
+              if (!user.password) return null; // OTP-only account, must use OTP login
 
               const { createHash } = await import('crypto');
               const hashed = createHash('sha256').update(password).digest('hex');

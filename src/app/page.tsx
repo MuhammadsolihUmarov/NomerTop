@@ -32,7 +32,7 @@ export default function Home() {
         <div className="container">
           <motion.div
             className="hero-in"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
@@ -184,7 +184,7 @@ export default function Home() {
           min-width: 0;
           box-shadow: none !important;
         }
-        .plate::placeholder { color: #cbd5e1 !important; font-weight: 400 !important; }
+        .plate::placeholder { color: #c8d4e0 !important; font-weight: 400 !important; }
 
         .go {
           display: flex; align-items: center; gap: 0.4rem;

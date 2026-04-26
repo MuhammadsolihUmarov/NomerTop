@@ -54,13 +54,21 @@ export async function registerUser(formData: FormData) {
         ...(phone ? [{ phone }] : []),
         ...(email ? [{ email }] : []),
       ];
-      if (orConditions.length) {
-        const existing = await db.user.findFirst({ where: { OR: orConditions } });
-        if (existing) return { error: 'PHONE_EXISTS' };
-      }
-
       const { createHash } = await import('crypto');
       const hashed = createHash('sha256').update(password).digest('hex');
+
+      if (orConditions.length) {
+        const existing = await db.user.findFirst({ where: { OR: orConditions } });
+        if (existing) {
+          if (existing.password) return { error: 'PHONE_EXISTS' };
+          // User was created by OTP with no password — let them set one now
+          await db.user.update({
+            where: { id: existing.id },
+            data: { name: name || existing.name, password: hashed },
+          });
+          return { success: true };
+        }
+      }
 
       await db.user.create({
         data: { name: name || phone, email: email || null, phone: phone || null, password: hashed },
@@ -131,6 +139,27 @@ export async function searchPlate(formData: FormData) {
 }
 
 /**
+ * Forward message to Telegram if plate owner has a Telegram account
+ */
+async function notifyViaTelegram(telegramId: string, plateDisplay: string, content: string) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token || token === 'your_token_here') return;
+  try {
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: telegramId,
+        text: `📩 <b>${plateDisplay}</b> raqamingizga yangi xabar:\n\n"${content}"`,
+        parse_mode: 'HTML',
+      }),
+    });
+  } catch {
+    // Telegram notification is best-effort, never block the main flow
+  }
+}
+
+/**
  * Send Message to Plate Owner
  */
 export async function sendMessage(formData: FormData) {
@@ -141,6 +170,17 @@ export async function sendMessage(formData: FormData) {
   if (!content || !plateIdOrNumber) return { error: "Message content is required." };
 
   const normalized = normalizePlate(plateIdOrNumber);
+
+  // Try to deliver via Telegram if owner is a Telegram user
+  try {
+    const plate = await db.plate.findUnique({
+      where: { number: normalized },
+      include: { owner: true },
+    });
+    if (plate?.owner?.telegramId) {
+      await notifyViaTelegram(plate.owner.telegramId, plate.displayNumber, content);
+    }
+  } catch { /* ignore */ }
 
   try {
     await serverFetch('/messages', {
